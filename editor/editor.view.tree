@@ -1,0 +1,72 @@
+$ss_editor $mol_scroll
+	sub /
+		<= Contenteditable $ss_blocks_contenteditable
+			Body <= Ui_root_node? null
+			Block* => Block*
+	lib $mol_tree2_empty
+	prop_ids? /string
+	props_by_type* /$ss_editor_node_data
+	prop_norm_tree*? /$mol_tree2
+	Ui_node* $ss_editor_node_ui
+		id <= id* \
+		data_node <= data_node_by_ui_id* $ss_editor_node_data
+		data_node_parent <= data_node_parent_by_ui_id* $ss_editor_node_data
+		children? <= ui_node_children*? /$ss_editor_node_ui
+		library_tree <= library_tree $mol_tree2_empty
+		Block <= Ui_node_block* $ss_blocks_block
+		Block_fabric* <= Block_fabric* $ss_blocks_block
+		drop_node* <= drop_node* null
+		unbind_prop* <= unbind_prop* null
+		drop_parent_node* <= drop_parent_node* null
+		add_sibling_object_above* <= add_sibling_object_above* null
+		props_by_type* <= props_by_type*
+		replace_prop*? <=> replace_prop*? null
+		set_subprop_tree*? <=> set_subprop_tree*? null
+		add_subprop* <= add_subprop* null
+		add_rootprop* <= add_rootprop* null
+		add_object_in_list*? <=> add_object_in_list*? null
+		class_list <= class_list /string
+		props_of* <= props_of* /$mol_tree2
+	Data_node* $ss_editor_node_data
+		id <= id* \
+		tree? <= data_tree*? $mol_tree2_empty
+		value? <=> data_value*? \
+		type? <=> data_type*? \
+		child_ids? <=> data_child_ids*? /string
+		child_nodes? <=> data_child_nodes*? /$ss_editor_node_data
+		changeable? <=> data_changeable*? false
+		multiple? <=> data_multiple*? false
+		data_tree*? <=> data_tree*? $mol_tree2_empty
+		data_value*? <=> data_value*? \
+		data_type*? <=> data_type*? \
+		data_child_ids*? <=> data_child_ids*? /string
+		data_child_nodes*? <=> data_child_nodes*? /$ss_editor_node_data
+		data_changeable*? <=> data_changeable*? false
+		data_multiple*? <=> data_multiple*? false
+	initial_tree_string \
+		\$hyoo_studio_example $mol_page
+		\	tools /
+		\		<= Button_tools $mol_button_minor
+		\			title \Toolbar Button
+		\	body /
+		\		<= Login $mol_form
+		\			form_fields /
+		\				<= Name_field $mol_form_field
+		\					name <= name_label @ \User name
+		\					bid <= name_bid \
+		\					control <= Name_control $mol_string
+		\						value? <=> name? \
+		\				<= pass_field $mol_form_field
+		\					name <= pass_label @ \Pass word
+		\					bid <= pass_bid \
+		\					control <= Pass_control $mol_string
+		\						value? <=> pass? \
+		\						type \password
+		\			buttons /
+		\				<= Login_submit $mol_button_major
+		\					title <= login_submit_label @ \Submit
+		\					event_click? <=> event_submit? null
+		\	foot /
+		\		<= Button_foot $mol_button_minor
+		\			title \Footer Button
+		\

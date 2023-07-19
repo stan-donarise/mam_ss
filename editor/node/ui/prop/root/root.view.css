@@ -1,0 +1,7 @@
+[ss_editor_node_ui_prop_root] > [ss_editor_node_ui_prop_root_self_body] {
+	color: red;
+}
+
+[ss_editor_node_ui_prop_root][valid="true"] > [ss_editor_node_ui_prop_root_self_body] {
+	color: var(--mol_theme_text);
+}

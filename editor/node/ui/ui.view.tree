@@ -1,0 +1,201 @@
+$ss_editor_node_ui $mol_ghost
+	id \
+	data_id \
+	data_node $ss_editor_node_data
+		type => type
+	data_node_parent $ss_editor_node_data
+	library_tree $mol_tree2_empty
+	-
+	Block $ss_blocks_block
+	Block_fabric* $ss_blocks_block
+	children /$ss_editor_node_ui
+	-
+	Sub <= Root
+	type_force? \
+	-
+	variants *
+		locale <= Locale $ss_editor_node_ui_locale
+			children <= children
+			data_node <= data_node
+		root <= Root $ss_editor_node_ui_root
+			children <= children
+			data_node <= data_node
+		value <= Value $ss_editor_node_ui_value
+			Block <= Block
+			children <= children
+			data_node <= data_node
+		string <= String $ss_editor_node_ui_string
+			Block <= Block
+			children <= children
+			data_node <= data_node
+		bool <= Bool $ss_editor_node_ui_bool
+			Block <= Block
+			children <= children
+			data_node <= data_node
+		null <= Null $ss_editor_node_ui_null
+			Block <= Block
+			children <= children
+			data_node <= data_node
+		left <= Left $ss_editor_node_ui_left
+			children <= children
+			data_node <= data_node
+		right <= Right $ss_editor_node_ui_right
+			children <= children
+			data_node <= data_node
+		bi <= Bi $ss_editor_node_ui_bi
+			children <= children
+			data_node <= data_node
+		default <= Default $ss_editor_node_ui_default
+			Block <= Block
+			children <= children
+			data_node <= data_node
+		list <= List $ss_editor_node_ui_list
+			Block <= Block
+			data_node <= data_node
+			children <= children
+			Block_fabric* <= Block_fabric*
+			Self_body => List_body
+			Children => List_children
+			id <= id
+		dict <= Dict $ss_editor_node_ui_dict
+			Block <= Block
+			data_node <= data_node
+			children <= children
+			Self_body => Dict_body
+			Children => Dict_children
+		key <= Key $ss_editor_node_ui_key
+			Block <= Block
+			children <= children
+			data_node <= data_node
+		prop <= Prop $ss_editor_node_ui_prop
+			Block <= Block
+			children <= children
+			data_node <= data_node
+			replace*? <= replace_prop*? null
+			add_object_in_list*? <=> add_object_in_list*? null
+			id <= id
+			unbind_prop* <= unbind_prop* null
+		prop_root <= Prop_root $ss_editor_node_ui_prop_root
+			Block <= Block
+			children <= children
+			data_node <= data_node
+			props_of* <= props_of* /$mol_tree2
+			data_node_parent <= data_node_parent
+			drop_node* <= drop_node*
+			set_subprop_tree*? <=> set_subprop_tree*? null
+			add_object_in_list*? <=> add_object_in_list*? null
+			id <= id
+		prop_sub <= Subprop $ss_editor_node_ui_prop_sub
+			Block <= Block
+			children <= children
+			data_node <= data_node
+			props_of* <= props_of* /$mol_tree2
+			data_node_parent <= data_node_parent
+			drop_node* <= drop_node*
+			set_subprop_tree*? <=> set_subprop_tree*? null
+			add_object_in_list*? <=> add_object_in_list*? null
+			id <= id
+		class <= Class $ss_editor_node_ui_class
+			Block <= Block
+			Self_body => Class_body
+			children <= children
+			data_node <= data_node
+			class_list <= class_list /string
+			valid => valid_class
+		class_base <= Class_base $ss_editor_node_ui_class_base
+			Block <= Block
+			Self_body => Class_base_body
+			children <= children
+			data_node <= data_node
+			class_list <= class_list /string
+		component <= Component $ss_editor_node_ui_component
+			Block <= Block
+			children <= children
+			library_tree <= library_tree
+			data_node <= data_node
+			Block_fabric* <= Block_fabric*
+			drop_node* <= drop_node* null
+			drop_parent_node* <= drop_parent_node* null
+			add_sibling_object_above* <= add_sibling_object_above* null
+			add_rootprop* <= add_rootprop* null
+			id <= id
+		object <= Object $ss_editor_node_ui_object
+			Block <= Block
+			children <= children
+			library_tree <= library_tree
+			data_node <= data_node
+			Block_fabric* <= Block_fabric*
+			drop_node* <= drop_node* null
+			drop_parent_node* <= drop_parent_node* null
+			add_sibling_object_above* <= add_sibling_object_above* null
+			replace*? <=> replace_prop*? null
+			props_by_type* <= props_by_type* /$ss_editor_node_data
+			add_subprop* <= add_subprop* null
+			id <= id
+
+$ss_editor_node_ui_root $ss_editor_node_ui_default
+	sub /
+		<= Children
+
+$ss_editor_node_ui_locale $ss_editor_node_ui_default
+	sub /
+		<= Children
+
+$ss_editor_node_ui_dict $ss_editor_node_ui_default
+	sub /
+		<= Self_body $ss_editor_noedit sub / \: dict
+	Children $mol_list
+		rows? <= children /$ss_editor_node_ui
+
+$ss_editor_node_ui_value $ss_editor_node_ui_default
+
+$ss_editor_node_ui_key $ss_editor_node_ui_default
+	sub /
+		<= Self_body $mol_view sub / <= Block $ss_blocks_block
+		<= Delimiter $mol_view sub / \:
+		<= Children $mol_list
+			rows? <= children /$ss_editor_node_ui
+
+$ss_editor_node_ui_null $ss_editor_node_ui_value
+	sub /
+		<= Self_body $mol_view sub / 
+			<= Block $ss_blocks_block
+		<= Noeditable $ss_editor_noedit sub / \: any
+
+$ss_editor_node_ui_bool $ss_editor_node_ui_value
+	sub /
+		<= Self_body $mol_view sub / 
+			<= Block $ss_blocks_block
+		<= Noeditable $ss_editor_noedit sub / \: boolean
+
+$ss_editor_node_ui_string $ss_editor_node_ui_value
+	sub /
+		<= Self_body $mol_view sub / 
+			<= Block $ss_blocks_block
+		<= Noeditable $ss_editor_noedit sub / \: string
+
+$ss_editor_node_ui_left $ss_editor_node_ui_default
+	data_node $ss_editor_node_data
+		value? => value?
+	sub /
+		<= Self_body $ss_editor_noedit sub / \⟵
+		<= Children
+
+$ss_editor_node_ui_left_slot $ss_editor_node_ui_left
+	sub /
+		<= Self_body $ss_editor_noedit sub / \⟵
+		<= Label $mol_view sub / \New component...
+
+$ss_editor_node_ui_right $ss_editor_node_ui_default
+	data_node $ss_editor_node_data
+		value? => value?
+	sub /
+		<= Self_body $ss_editor_noedit sub / \⟶
+		<= Children
+
+$ss_editor_node_ui_bi $ss_editor_node_ui_default
+	data_node $ss_editor_node_data
+		value? => value?
+	sub /
+		<= Self_body $ss_editor_noedit sub / \⟷
+		<= Children

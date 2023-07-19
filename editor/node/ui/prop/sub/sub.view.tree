@@ -1,0 +1,26 @@
+$ss_editor_node_ui_prop_sub $ss_editor_node_ui_prop
+	data_node_parent $ss_editor_node_data
+	props_of* /$mol_tree2
+	set_subprop_tree*? null
+	position \sub
+	bubble_content /
+		<= Bind_popover
+		<= Changeable
+		<= Drop
+	autocomplete_footer /
+		<= Drop
+	attr *
+		^
+		valid <= valid true
+	Bind_popover $mol_pop_over
+		Anchor <= Bind $mol_check_box
+			title \Bind
+			checked? <=> bind? false
+		align \right_center
+		bubble_content /
+			<= Switch_bind $mol_switch
+				value? <=> bind_value? \
+				options *
+					left \⟵
+					bi \⟷
+					right \⟶

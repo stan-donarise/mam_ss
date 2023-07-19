@@ -1,0 +1,16 @@
+[ss_editor_node_ui_object][hovered="true"] {
+	background-color: var(--mol_theme_card);
+}
+
+[ss_editor_node_ui_object_props] {
+	border-left: solid 1px;
+	border-left-color: transparent;
+}
+
+[ss_editor_node_ui_object_props] {
+	flex-direction: column;
+}
+
+/* [ss_editor_node_ui_object]:hover > [ss_editor_node_ui_object_props] {
+	border-left-color: hsla( var(--mol_theme_hue), 50%, calc( 50% - 10% * var(--mol_theme_luma) ), .5 );
+} */

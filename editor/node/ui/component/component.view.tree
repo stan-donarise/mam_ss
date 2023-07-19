@@ -1,0 +1,16 @@
+$ss_editor_node_ui_component $ss_editor_node_ui_object
+	add_rootprop? null
+	bubble_content /
+		<= Props_select $mol_button_minor
+			click? <=> add_new_rootprop? null
+			sub /
+				<= Props_select_icon $mol_icon_playlist_plus
+				\Override property
+	Anchor $mol_view
+		sub /
+			<= Component_label $mol_view
+				sub /
+					<= Dollar $ss_editor_noedit
+						sub / \$
+					<= Object_label
+			<= Class_label

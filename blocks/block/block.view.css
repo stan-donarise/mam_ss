@@ -1,0 +1,9 @@
+[ss_blocks_block]::after {
+	pointer-events: none;
+	content: var(--after);
+	opacity: .3;
+}
+
+[ss_blocks_block][focus-state="focused"] {
+	background: rgba(255,255,255,0.1);
+}

@@ -1,0 +1,33 @@
+$ss_editor_node_ui_pop $ss_editor_node_ui_default
+	sub /
+		<= Self_body $mol_pop_over
+			showed? <=> showed? false
+			align <= test \bottom_right
+			hovered => self_hovered
+			Anchor <= Anchor $mol_view
+				sub / 
+					<= Block
+			bubble_content <= visible_bubble_content / 
+				<= Bubble_content $ss_editor_noedit
+					sub <= bubble_content /
+		<= Children $mol_list
+			rows? <= children
+	Autocomplete_bubble_content $ss_editor_noedit
+		sub / 
+			<= Bubble_scroll $mol_scroll
+				sub <= bubble_content_autocomplete /
+					<= Bubble_pane
+			<= Autocomplete_footer $mol_view
+				sub <= autocomplete_footer /
+	autocomplete false
+	data_node $ss_editor_node_data
+	Autocomplete $mol_select
+		no_options_message \Not found
+		event_select*? <=> event_select*? null
+		Bubble_pane => Bubble_pane
+		dictionary <= select_dict *
+		filter_pattern <= filter_pattern \
+		options_filtered => options_filtered
+	attr *
+		^
+		hovered <= self_hovered

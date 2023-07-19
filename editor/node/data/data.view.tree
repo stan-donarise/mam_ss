@@ -1,0 +1,17 @@
+$ss_editor_node_data $mol_object2
+	id \
+	value? \
+	type? \
+	child_ids? /string
+	child_nodes? /$ss_editor_node_data
+	tree? $mol_tree2_empty
+	multiple? false
+	changeable? false
+	binded? false
+	data_tree*? $mol_tree2_empty
+	data_value*? \
+	data_type*? \
+	data_child_ids*? /string
+	data_child_nodes*? /$ss_editor_node_data
+	data_changeable*? false
+	data_multiple*? false

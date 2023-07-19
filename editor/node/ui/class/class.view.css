@@ -1,0 +1,7 @@
+[ss_editor_node_ui_class_self] {
+	color: red;
+}
+
+[ss_editor_node_ui_class_self][valid="true"] {
+	color: var(--mol_theme_special);
+}

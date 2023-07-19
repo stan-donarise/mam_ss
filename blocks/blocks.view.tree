@@ -1,0 +1,11 @@
+$ss_blocks $mol_object2
+	Block* $ss_blocks_block
+	beforeinput? null
+	keydown? null
+	input? null
+	dragenter? null
+	drop? null
+	drag? null
+	dragleave? null
+	paste? null
+	cut? null

@@ -1,0 +1,35 @@
+$ss_blocks_block $mol_view
+	minimal_height 25
+	sub /
+		<= value? \default_block_value
+	value_changed? \
+	attr *
+		^
+		focus-state <= focus_state? \blurred
+	style *
+		^
+		--after <= after_content \
+	visible_placeholder \
+	placeholder \
+	on_ctrl_x?event null
+	before_any_input?event null
+	before_insert_text?event null
+	-
+	beforeinput? null
+	keydown? null
+	input? null
+	dragenter? null
+	drop? null
+	drag? null
+	dragleave? null
+	paste? null
+	cut? null
+	-
+	event *
+		^
+		mouseout? <=> mouseout? null
+		mouseover? <=> mouseover? null
+	-
+	focused? false
+	hovered? false
+	focus null

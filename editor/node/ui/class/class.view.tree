@@ -1,0 +1,26 @@
+$ss_editor_node_ui_class $ss_editor_node_ui_pop
+	data_node $ss_editor_node_data
+	tree $mol_tree2_empty
+	sub /
+	autocomplete true
+	class_list /string
+	Anchor $ss_editor_node_ui_class_self
+		Block <= Block $ss_blocks_block
+		valid <= valid true
+	bubble_content /
+		<= Replace_class $mol_button_minor
+			click? <=> clear? null
+			sub /
+				<= Replace_class_icon $mol_icon_find_replace
+				\Replace class
+
+$ss_editor_node_ui_class_self $mol_view
+	sub /
+		<= Dollar $ss_editor_noedit
+			sub / \$
+		<= Label $mol_view 
+			sub / 
+				<= Block $ss_blocks_block
+	attr *
+		^
+		valid <= valid true

@@ -1,0 +1,12 @@
+$ss_editor_node_ui_default $mol_view
+	id \
+	data_node $ss_editor_node_data
+	sub /
+		<= Self_body $mol_view 
+			sub / <= Block $ss_blocks_block
+			minimal_width 32
+		<= Children $mol_list
+			rows? <= children /$ss_editor_node_ui
+	attr *
+		^
+		focused <= block_focused false

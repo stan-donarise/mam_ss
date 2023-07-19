@@ -1,0 +1,8 @@
+[ss_editor_node_ui_list]:hover > [ss_editor_node_ui_list_noeditable_body]{
+	background-color: var(--mol_theme_card);
+}
+
+[ss_editor_node_ui_list]:hover > [ss_editor_node_ui_list_children_and_slots] > [ss_editor_node_ui_left_slot]{
+	opacity: 0.4;
+	color: var(--mol_theme_control);
+}

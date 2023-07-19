@@ -1,0 +1,56 @@
+$ss_editor_node_ui_prop $ss_editor_node_ui_pop
+	data_node $ss_editor_node_data
+		type => type
+		changeable? <=> changeable?
+		multiple? <=> multiple?
+		binded? => binded?
+	drop_node* null
+	unbind_prop* null
+	autocomplete true
+	add_object_in_list*? null
+	position \binded
+	id \
+	sub /
+		<= Self_body
+		<= Children
+	Anchor $mol_view
+		sub <= self_sub / 
+			<= Block
+			<= Icons $ss_editor_noedit sub <= icons /
+				<= Icon_multiple $mol_icon_key_variant
+				<= Icon_changeable $mol_icon_cached
+	tail_ui_node_type \
+	tail_ui_node_nullable null
+	tail_ui_node $ss_editor_node_ui
+		List_body => List_body
+		List_children => List_children
+		Dict_body => Dict_body
+		Dict_children => Dict_children
+	bubble_content /
+		- <= Add_list_item
+		- <= Bind_popover
+		<= Changeable $mol_check_box
+			title \Changeable
+			checked? <=> changeable? false
+		<= Multiple $mol_check_box
+			title \Multiple
+			checked? <=> multiple? false
+		<= Drop $mol_button_minor
+			click? <=> drop? null
+			sub /
+				<= Drop_icon $mol_icon_trash_can_outline
+				\Drop
+	Add_list_item_popover $mol_pop_over
+		Anchor <= Add_list_item $mol_button_minor
+			click? <=> add_first? null
+			sub /
+				<= Add_list_item_icon $mol_icon_plus_box
+				\Add item
+		align \right_top
+		bubble_content /
+			<= Position_label $mol_labeler
+				title \In position:
+				content <= new_item_positions /
+					<= New_item_pos*1 $mol_button_minor
+						title <= pos_title*
+						click? <=> add_in_pos*? null

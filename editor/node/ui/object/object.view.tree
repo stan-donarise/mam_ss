@@ -1,0 +1,52 @@
+$ss_editor_node_ui_object $ss_editor_node_ui_pop
+	tree $mol_tree2_empty
+	library_tree $mol_tree2_empty
+	Block_fabric* $ss_blocks_block
+	drop_node* null
+	drop_parent_node* null
+	replace*? null
+	add_subprop* null
+	add_sibling_object_above* null
+	autocomplete true
+	props_by_type* /$ss_editor_node_data
+	data_node $ss_editor_node_data
+		multiple? <=> multiple?
+	class_ui_node $ss_editor_node_ui
+		Class_body => Class_body
+		children => class_children
+	sub /
+		<= Self_body
+		<= Props $mol_view
+			sub? <= class_children
+	Anchor $mol_view
+		sub /
+			<= Object_label $mol_view 
+				sub <= object_label /
+					<= Block
+					<= Icons $ss_editor_noedit sub <= icons /
+						<= Icon_multiple $mol_icon_key_variant
+			<= Class_label $mol_view 
+				sub / 
+					<= Class_body
+	bubble_content /
+		<= Props_select $mol_button_minor
+			click? <=> add_new_subprop? null
+			sub /
+				<= Props_select_icon $mol_icon_playlist_plus
+				\Override property
+		<= Multiple $mol_check_box
+			title \Multiple
+			checked? <=> multiple? false
+		<= Replace $mol_button_minor
+			title \Replace
+			click? <=> clear? null
+			sub /
+				<= Replace_icon $mol_icon_find_replace
+				\Replace
+		<= Drop $mol_button_minor
+			click? <=> drop? null
+			sub /
+				<= Drop_icon $mol_icon_trash_can_outline
+				\Drop
+	autocomplete_footer /
+		<= Drop

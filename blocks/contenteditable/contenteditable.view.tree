@@ -1,0 +1,29 @@
+$ss_blocks_contenteditable $mol_view
+	Blocks $ss_blocks
+		Block* => Block*
+		beforeinput? => blocks_beforeinput?
+		keydown? => blocks_keydown?
+		input? => blocks_input?
+		dragenter? => blocks_dragenter?
+		drop? => blocks_drop?
+		drag? => blocks_drag?
+		dragleave? => blocks_dragleave?
+		paste? => blocks_paste?
+		cut? => blocks_cut?
+	sub /
+		<= Body $mol_view
+	field *
+		^
+		contentEditable true
+		- contentEditable \plaintext-only
+	event *
+		^
+		beforeinput? <=> blocks_beforeinput?
+		keydown? <=> blocks_keydown?
+		input? <=> blocks_input?
+		dragenter? <=> blocks_dragenter?
+		drop? <=> blocks_drop?
+		drag? <=> blocks_drag?
+		dragleave? <=> blocks_dragleave?
+		paste? <=> blocks_paste?
+		cut? <=> blocks_cut?
