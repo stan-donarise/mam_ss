@@ -2,4 +2,4 @@ $ss_editor_node_ui_class_base $ss_editor_node_ui_class
 	sub /
 		<= Self_body
 		<= Props $mol_view
-			sub? <= root_props /ss_editor_node_ui_prop_root
+			sub? <= root_props /$ss_editor_node_ui_prop_root

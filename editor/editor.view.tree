@@ -1,4 +1,5 @@
 $ss_editor $mol_scroll
+	title \$ss_editor
 	sub /
 		<= Contenteditable $ss_blocks_contenteditable
 			Body <= Ui_root_node? null
@@ -44,7 +45,7 @@ $ss_editor $mol_scroll
 		data_changeable*? <=> data_changeable*? false
 		data_multiple*? <=> data_multiple*? false
 	initial_tree_string \
-		\$hyoo_studio_example $mol_page
+		\$ss_editor_example $mol_page
 		\	tools /
 		\		<= Button_tools $mol_button_minor
 		\			title \Toolbar Button
