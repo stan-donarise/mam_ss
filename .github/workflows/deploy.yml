@@ -1,4 +1,4 @@
-name: $ss_links
+name: $ss_editor
 
 on:
   workflow_dispatch:
@@ -17,9 +17,9 @@ jobs:
     - uses: hyoo-ru/mam_build@master2
       with:
         package: 'ss'
-        modules: 'links'
+        modules: 'editor'
 
     - uses: JamesIves/github-pages-deploy-action@4.1.7
       with:
         branch: gh-pages
-        folder: 'ss/links/-'
+        folder: 'ss/editor/-'
