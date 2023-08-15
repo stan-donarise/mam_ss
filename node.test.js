@@ -3582,57 +3582,30 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $ss_blocks_noedit extends $mol_view {
-        field() {
-            return {
-                ...super.field(),
-                contentEditable: false
-            };
-        }
-    }
-    $.$ss_blocks_noedit = $ss_blocks_noedit;
-})($ || ($ = {}));
-//ss/blocks/noedit/-view.tree/noedit.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
     class $ss_blocks_block extends $mol_view {
-        Placeholder() {
-            const obj = new this.$.$ss_blocks_noedit();
-            obj.sub = () => [
-                "test"
-            ];
-            return obj;
+        minimal_height() {
+            return 25;
         }
         sub() {
             return [
-                this.default_value()
+                this.value()
             ];
-        }
-        value_setted(next) {
-            if (next !== undefined)
-                return next;
-            return "default_block_value_changed";
         }
         value_changed(next) {
             if (next !== undefined)
                 return next;
-            return "default_block_value_changed";
+            return "";
         }
         attr() {
             return {
                 ...super.attr(),
-                "focus-state": this.focus_state(),
-                empty: this.empty()
+                "focus-state": this.focus_state()
             };
         }
         style() {
             return {
                 ...super.style(),
-                "--before": this.before_content(),
-                "--after": this.after_content(),
-                opacity: this.opacity()
+                "--after": this.after_content()
             };
         }
         visible_placeholder() {
@@ -3642,11 +3615,6 @@ var $;
             return "";
         }
         on_ctrl_x(event) {
-            if (event !== undefined)
-                return event;
-            return null;
-        }
-        keydown_enter(event) {
             if (event !== undefined)
                 return event;
             return null;
@@ -3723,16 +3691,12 @@ var $;
                 return next;
             return false;
         }
-        focused_or_hovered() {
-            return false;
-        }
-        on_focused_or_hovered(id) {
-            return null;
-        }
         focus() {
             return null;
         }
-        default_value() {
+        value(next) {
+            if (next !== undefined)
+                return next;
             return "default_block_value";
         }
         focus_state(next) {
@@ -3740,19 +3704,8 @@ var $;
                 return next;
             return "blurred";
         }
-        empty(next) {
-            if (next !== undefined)
-                return next;
-            return false;
-        }
-        before_content() {
-            return "";
-        }
         after_content() {
             return "";
-        }
-        opacity() {
-            return 1;
         }
         mouseout(next) {
             if (next !== undefined)
@@ -3767,19 +3720,10 @@ var $;
     }
     __decorate([
         $mol_mem
-    ], $ss_blocks_block.prototype, "Placeholder", null);
-    __decorate([
-        $mol_mem
-    ], $ss_blocks_block.prototype, "value_setted", null);
-    __decorate([
-        $mol_mem
     ], $ss_blocks_block.prototype, "value_changed", null);
     __decorate([
         $mol_mem
     ], $ss_blocks_block.prototype, "on_ctrl_x", null);
-    __decorate([
-        $mol_mem
-    ], $ss_blocks_block.prototype, "keydown_enter", null);
     __decorate([
         $mol_mem
     ], $ss_blocks_block.prototype, "before_any_input", null);
@@ -3821,10 +3765,10 @@ var $;
     ], $ss_blocks_block.prototype, "hovered", null);
     __decorate([
         $mol_mem
-    ], $ss_blocks_block.prototype, "focus_state", null);
+    ], $ss_blocks_block.prototype, "value", null);
     __decorate([
         $mol_mem
-    ], $ss_blocks_block.prototype, "empty", null);
+    ], $ss_blocks_block.prototype, "focus_state", null);
     __decorate([
         $mol_mem
     ], $ss_blocks_block.prototype, "mouseout", null);
@@ -3834,13 +3778,6 @@ var $;
     $.$ss_blocks_block = $ss_blocks_block;
 })($ || ($ = {}));
 //ss/blocks/block/-view.tree/block.view.tree.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_action = $mol_wire_method;
-})($ || ($ = {}));
-//mol/action/action.ts
 ;
 "use strict";
 var $;
@@ -3866,71 +3803,34 @@ var $;
             }
             return el;
         }
-        function $ss_blocks_block_trim(str) {
-            return str?.at(-1) == '\n' ? str.slice(0, -1) : str;
-        }
-        $$.$ss_blocks_block_trim = $ss_blocks_block_trim;
         class $ss_blocks_block extends $.$ss_blocks_block {
-            br() {
-                return document.createElement('br');
-            }
             sub() {
-                const value = this.default_value();
+                const value = this.value();
                 if (value && value != '\n') {
-                    return [value, this.br()];
+                    return [value];
                 }
-                return [this.br()];
+                return [];
             }
-            update_value(data_value) {
-                const val = data_value || '\n';
-                this.default_value = () => val;
-                const innerText = this.dom_node()?.parentElement?.innerText;
-                if (val != innerText) {
-                    this.dom_node().innerHTML = val != '\n' ? val : '<br/>';
-                }
-            }
-            input(e) {
-                const innerText = this.dom_node()?.parentElement?.innerText;
-                this.value_changed(innerText);
-            }
-            before_content() {
+            after_content() {
                 return `"${this.visible_placeholder()}"`;
-            }
-            empty() {
-                return ['', '\n'].includes(this.value_changed());
             }
             visible_placeholder() {
                 const placeholder = this.placeholder();
-                return this.empty() ? placeholder : '';
-            }
-            auto() {
-                this.focused_or_hovered();
-            }
-            set_focused_or_hovered(args) {
-                const { focused, hovered } = args;
-                if (focused === undefined) {
-                    this.on_focused_or_hovered(this.focused() || hovered);
-                }
-                else {
-                    this.on_focused_or_hovered(this.hovered() || focused);
-                }
+                return this.value() == '' ? placeholder : '';
             }
             focus_state(next) {
                 if (next == 'focused') {
                     this.focused(true);
-                    this.set_focused_or_hovered({ focused: true });
                 }
                 else {
                     this.focused(false);
-                    this.set_focused_or_hovered({ focused: false });
                 }
                 return next || "blurred";
             }
-            async focus(pos = 'end') {
+            async focus() {
                 this.focus_state('setting');
-                const dom = this.dom_tree();
-                if (dom?.parentElement?.innerText == this.value_changed()
-                    || dom.parentElement && !this.value_changed()) {
+                const dom = this.dom_node();
+                if (dom.parentElement) {
                     const selection = window.getSelection();
                     const range = document.createRange();
                     selection.removeAllRanges();
@@ -3939,7 +3839,7 @@ var $;
                         focusEl = dom;
                     if (focusEl?.nodeName == 'BR' && focusEl.previousSibling)
                         focusEl = focusEl.previousSibling;
-                    range.setEnd(focusEl, focusEl.textContent.length);
+                    range.setEnd(focusEl, focusEl.textContent?.length || 0);
                     range.collapse(false);
                     selection.addRange(range);
                     return;
@@ -3950,10 +3850,12 @@ var $;
                     }));
                 }
             }
+            input(e) {
+            }
             beforeinput(e) {
                 const el = $ss_blocks_block_anchor_el();
                 if (el.parentElement != focus_el().parentElement) {
-                    e?.preventDefault();
+                    e.preventDefault();
                     return;
                 }
                 this.before_any_input(e);
@@ -4009,10 +3911,6 @@ var $;
                     e.preventDefault();
                 }
                 else if (e.key === 'Enter') {
-                    const keydown_enter = this.keydown_enter(e);
-                    if (keydown_enter !== true) {
-                        document.execCommand('insertLineBreak');
-                    }
                     e.preventDefault();
                 }
                 else if (e.ctrlKey) {
@@ -4047,7 +3945,6 @@ var $;
             }
             paste(e) {
                 e.preventDefault();
-                this.before_any_input(e);
                 const sel = document.getSelection();
                 if (sel?.rangeCount) {
                     const range = sel.getRangeAt(0);
@@ -4071,58 +3968,28 @@ var $;
                         }
                     });
                 }
-                const innerText = this.dom_node()?.parentElement?.innerText;
-                this.value_changed(innerText);
             }
             cut(e) {
             }
             mouseover() {
                 this.hovered(true);
-                this.set_focused_or_hovered({ hovered: true });
             }
             mouseout() {
                 this.hovered(false);
-                this.set_focused_or_hovered({ hovered: false });
-            }
-            hovered(next) {
-                $mol_wire_solid();
-                return next;
-            }
-            focused(next) {
-                $mol_wire_solid();
-                return next;
             }
         }
         __decorate([
             $mol_mem
-        ], $ss_blocks_block.prototype, "br", null);
-        __decorate([
-            $mol_mem
         ], $ss_blocks_block.prototype, "sub", null);
         __decorate([
-            $mol_action
-        ], $ss_blocks_block.prototype, "update_value", null);
-        __decorate([
             $mol_mem
-        ], $ss_blocks_block.prototype, "before_content", null);
-        __decorate([
-            $mol_mem
-        ], $ss_blocks_block.prototype, "empty", null);
+        ], $ss_blocks_block.prototype, "after_content", null);
         __decorate([
             $mol_mem
         ], $ss_blocks_block.prototype, "visible_placeholder", null);
         __decorate([
-            $mol_action
-        ], $ss_blocks_block.prototype, "set_focused_or_hovered", null);
-        __decorate([
             $mol_mem
         ], $ss_blocks_block.prototype, "focus_state", null);
-        __decorate([
-            $mol_mem
-        ], $ss_blocks_block.prototype, "hovered", null);
-        __decorate([
-            $mol_mem
-        ], $ss_blocks_block.prototype, "focused", null);
         $$.$ss_blocks_block = $ss_blocks_block;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
@@ -4131,7 +3998,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("ss/blocks/block/block.view.css", "[ss_blocks_block]::before {\n\tpointer-events: none;\n\tcontent: var(--before);\n\topacity: .3;\n}\n\n/* [ss_blocks_block]::before {\n\tpointer-events: none;\n\tcontent: var(--before);\n\topacity: .3;\n} */\n\n[ss_blocks_block][focus-state=\"focused\"] {\n\tbackground: rgba(255,255,255,0.1);\n}\n\n[ss_blocks_block] {\n\twhite-space: pre-wrap;\n\tdisplay: block;\n}\n\n[ss_blocks_block][empty] {\n\t/* caret-color: transparent; */\n}\n");
+    $mol_style_attach("ss/blocks/block/block.view.css", "[ss_blocks_block]::after {\n\tpointer-events: none;\n\tcontent: var(--after);\n\topacity: .3;\n}\n\n[ss_blocks_block][focus-state=\"focused\"] {\n\tbackground: rgba(255,255,255,0.1);\n}\n");
 })($ || ($ = {}));
 //ss/blocks/block/-css/block.view.css.ts
 ;
@@ -5659,6 +5526,13 @@ var $;
 ;
 "use strict";
 //hyoo/hyoo.ts
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_action = $mol_wire_method;
+})($ || ($ = {}));
+//mol/action/action.ts
 ;
 "use strict";
 var $;
@@ -7959,7 +7833,7 @@ var $;
             return obj;
         }
         tail_ui_node_type() {
-            return null;
+            return "";
         }
         tail_ui_node_nullable() {
             return null;
@@ -7996,19 +7870,6 @@ var $;
             ];
             return obj;
         }
-        attr() {
-            return {
-                ...super.attr(),
-                tail: this.tail_ui_node_type()
-            };
-        }
-        Self_block() {
-            const obj = new this.$.$mol_view();
-            obj.sub = () => [
-                this.Block()
-            ];
-            return obj;
-        }
         Icon_multiple() {
             const obj = new this.$.$mol_icon_key_variant();
             return obj;
@@ -8030,7 +7891,7 @@ var $;
         }
         self_sub() {
             return [
-                this.Self_block(),
+                this.Block(),
                 this.Icons()
             ];
         }
@@ -8136,9 +7997,6 @@ var $;
     __decorate([
         $mol_mem
     ], $ss_editor_node_ui_prop.prototype, "Add_list_item_popover", null);
-    __decorate([
-        $mol_mem
-    ], $ss_editor_node_ui_prop.prototype, "Self_block", null);
     __decorate([
         $mol_mem
     ], $ss_editor_node_ui_prop.prototype, "Icon_multiple", null);
@@ -8315,7 +8173,7 @@ var $;
                 ];
             }
             tail_ui_node_type() {
-                return this.tail_ui_node_nullable()?.type() || null;
+                return this.tail_ui_node_nullable()?.type() || '';
             }
             tail_ui_node_nullable() {
                 if (this.position() == 'binded')
@@ -8340,7 +8198,7 @@ var $;
             }
             self_sub() {
                 return [
-                    this.Self_block(),
+                    this.Block(),
                     ...this.icons().length > 0 ? [this.Icons()] : [],
                     ...this.tail_ui_node_type() == 'list' ? [this.Children(), this.List_body()] :
                         this.tail_ui_node_type() == 'dict' ? [this.Children(), this.Dict_body()] : []
@@ -8431,7 +8289,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("ss/editor/node/ui/prop/prop.view.css", "[ss_editor_node_ui_prop] > [ss_editor_node_ui_prop_self_body] {\n\tcolor: var(--mol_theme_text);\n}\n\n[ss_editor_node_ui_prop][tail=\"list\"],\n[ss_editor_node_ui_prop][tail=\"dict\"] {\n\tflex-direction: column;\n\t/* flex-wrap: wrap; */\n\t/* width: min-content; */\n}\n");
+    $mol_style_attach("ss/editor/node/ui/prop/prop.view.css", "[ss_editor_node_ui_prop] > [ss_editor_node_ui_prop_self_body] {\n\tcolor: var(--mol_theme_text);\n}\n");
 })($ || ($ = {}));
 //ss/editor/node/ui/prop/-css/prop.view.css.ts
 ;
@@ -9230,6 +9088,9 @@ var $;
     var $$;
     (function ($$) {
         $mol_style_define($ss_editor_node_ui_prop_sub, {
+            flex: {
+                wrap: 'wrap',
+            },
             Anchor: {
                 flex: {
                     direction: 'row'
@@ -9306,6 +9167,7 @@ var $;
     (function ($$) {
         $mol_style_define($ss_editor_node_ui_prop_root, {
             flex: {
+                wrap: 'wrap',
                 direction: 'row'
             },
         });
@@ -9661,13 +9523,6 @@ var $;
             obj.sub = (next) => this.class_children();
             return obj;
         }
-        Label_block() {
-            const obj = new this.$.$mol_view();
-            obj.sub = () => [
-                this.Block()
-            ];
-            return obj;
-        }
         Icon_multiple() {
             const obj = new this.$.$mol_icon_key_variant();
             return obj;
@@ -9684,7 +9539,7 @@ var $;
         }
         object_label() {
             return [
-                this.Label_block(),
+                this.Block(),
                 this.Icons()
             ];
         }
@@ -9793,9 +9648,6 @@ var $;
     ], $ss_editor_node_ui_object.prototype, "Props", null);
     __decorate([
         $mol_mem
-    ], $ss_editor_node_ui_object.prototype, "Label_block", null);
-    __decorate([
-        $mol_mem
     ], $ss_editor_node_ui_object.prototype, "Icon_multiple", null);
     __decorate([
         $mol_mem
@@ -9864,7 +9716,7 @@ var $;
             }
             object_label() {
                 return [
-                    this.Label_block(),
+                    this.Block(),
                     ...this.icons().length > 0 ? [this.Icons()] : []
                 ];
             }
@@ -11691,6 +11543,9 @@ var $;
                 },
             },
             Children: {
+                flex: {
+                    basis: '100%'
+                },
                 border: {
                     left: {
                         width: '1px',
@@ -12180,9 +12035,11 @@ var $;
             Ui_node_block(ui_id) {
                 const block = this.Block(ui_id);
                 const data_id = this.data_id_from_ui_id(ui_id);
-                block.value_changed = next => this.data_value(data_id, next);
-                block.update_value(this.data_value(data_id));
+                block.value = () => this.data_value(data_id);
                 block.placeholder = () => this.data_type(data_id);
+                block.input = () => {
+                    this.data_value(data_id, block.dom_node().textContent);
+                };
                 return block;
             }
             Block_fabric(id) {
@@ -12481,8 +12338,9 @@ var $;
             Contenteditable: {
                 outline: 'none',
             },
-            flex: {
-                grow: 0,
+            padding: $mol_gap.block,
+            background: {
+                color: $mol_theme.card,
             },
         });
     })($$ = $.$$ || ($.$$ = {}));

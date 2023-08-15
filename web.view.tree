@@ -8,43 +8,41 @@ $mol_scroll $mol_view
 		^
 		scroll?event <=> event_scroll?event null
 
-$mol_book2 $mol_scroll
-	menu_title \
-	sub <= pages /$mol_view
-	minimal_width 0
-	Placeholder $mol_view
-	Gap* $mol_view title \
+$ss_editor_node_data $mol_object2
+	id \
+	value? \
+	type? \
+	child_ids? /string
+	child_nodes? /$ss_editor_node_data
+	tree? $mol_tree2_empty
+	multiple? false
+	changeable? false
+	binded? false
+	data_tree*? $mol_tree2_empty
+	data_value*? \
+	data_type*? \
+	data_child_ids*? /string
+	data_child_nodes*? /$ss_editor_node_data
+	data_changeable*? false
+	data_multiple*? false
 
 $mol_ghost $mol_view
 	Sub $mol_view
 
-$ss_blocks_noedit $mol_view
-	field *
-		^
-		contentEditable false
-
 $ss_blocks_block $mol_view
-	- minimal_height 25
-	Placeholder $ss_blocks_noedit
-		sub / \test
+	minimal_height 25
 	sub /
-		<= default_value \default_block_value
-	value_setted? \default_block_value_changed
-	value_changed? \default_block_value_changed
+		<= value? \default_block_value
+	value_changed? \
 	attr *
 		^
 		focus-state <= focus_state? \blurred
-		empty <= empty? false
 	style *
 		^
-		--before <= before_content \
 		--after <= after_content \
-		- color <= color \var(--mol_theme_text)
-		opacity <= opacity 1
 	visible_placeholder \
 	placeholder \
 	on_ctrl_x?event null
-	keydown_enter?event null
 	before_any_input?event null
 	before_insert_text?event null
 	-
@@ -65,204 +63,36 @@ $ss_blocks_block $mol_view
 	-
 	focused? false
 	hovered? false
-	focused_or_hovered false
-	on_focused_or_hovered* null
 	focus null
 
-$ss_linkpad_link_hover $mol_view
-	hovered? false
-	event *
-		^
-		mouseenter? <=> mouseenter? null
-		mouseleave? <=> mouseleave? null
+$mol_list $mol_view
+	render_visible_only true
+	render_over 0
+	sub <= rows /$mol_view
+	Empty $mol_view
+	Gap_before $mol_view style * paddingTop <= gap_before 0
+	Gap_after $mol_view style * paddingTop <= gap_after 0
+	view_window /
+		0
+		0
 
-$mol_svg $mol_view
-	dom_name \svg
-	dom_name_space \http://www.w3.org/2000/svg
-	font_size 16
-	font_family \
-	style_size *
-
-$mol_svg_root $mol_svg
-	dom_name \svg
-	attr *
-		^
-		viewBox <= view_box \0 0 100 100
-		preserveAspectRatio <= aspect \xMidYMid
-
-$mol_svg_path $mol_svg
-	dom_name \path
-	attr *
-		^
-		d <= geometry \
-
-
-$mol_icon $mol_svg_root
-	view_box \0 0 24 24
-	minimal_width 16
-	minimal_height 16
+$ss_editor_node_ui_default $mol_view
+	id \
+	data_node $ss_editor_node_data
 	sub /
-		<= Path $mol_svg_path
-			geometry <= path \
-
-$mol_icon_chevron $mol_icon path \M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z
-
-$mol_icon_chevron_right $mol_icon path \M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z
-
-$mol_link $mol_view
-	uri \
-	dom_name \a
+		<= Self_body $mol_view 
+			sub / <= Block $ss_blocks_block
+			minimal_width 32
+		<= Children $mol_list
+			rows? <= children /$ss_editor_node_ui
 	attr *
 		^
-		href <= uri_toggle \
-		title <= hint_safe <= hint \
-		target <= target \_self
-		download <= file_name \
-		mol_link_current <= current false
-	sub /$mol_view_content
-		<= title
-	arg *
-	event *
+		focused <= block_focused false
+
+$ss_editor_noedit $mol_view
+	field *
 		^
-		click?event <=> click?event <=> event_click?event null
-
-$mol_icon_chevron_down $mol_icon path \M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z
-
-$ss_blocks $mol_object2
-	Block* $ss_blocks_block
-	beforeinput? null
-	keydown? null
-	input? null
-	dragenter? null
-	drop? null
-	drag? null
-	dragleave? null
-	paste? null
-	cut? null
-
-$ss_linkpad_link_default $mol_view
-	ui_id null
-	all_link_ids? /string
-	Link_data* null
-	- name? \Name
-	type_name \Type
-	- value? \Value
-	hide_contain? true
-	data $ss_linkpad_link_data
-		from_id => from_id
-		id => link_id
-	type_data $ss_linkpad_link_data
-	Block* $ss_blocks_block
-		- value_changed? => value_changed*?
-	from_view /
-	left_line /
-	right_line /
-	Icon $mol_view sub / <= icon \📍
-	Name $mol_view
-		sub / <= Name_block $ss_blocks_block - this.Block*id+':name'
-	self_view /
-		<= Self $ss_linkpad_link_hover
-			sub <= self_sub /
-			hovered? => self_hovered?
-	type_and_name /
-		<= Type $ss_blocks_noedit
-			sub / <= type_name
-		<= Name_disabled $ss_blocks_noedit
-			sub / <= name \
-	value_and_id /
-		<= Value $mol_view
-			sub / 
-				<= Value_block $ss_blocks_block - this.Block*id+':value'
-		<= Link_id $ss_blocks_noedit
-			sub / <= link_id
-		<= Open_block $ss_blocks_noedit
-			sub /
-				<= Open $mol_link
-					- checked? <=> open_checked? false
-					arg * 
-						path <= arg_path null
-						right <= link_id
-					uri_off <= close_panel null
-					minimal_width 0
-					minimal_height 0
-					sub / <= Open_icon $mol_icon_chevron_right
-	self_node /
-		<= Circle_and_line $ss_blocks_noedit
-			sub /
-				<= Circle $ss_blocks_noedit
-					sub / <= Icon
-				<= Line_bottom $ss_blocks_noedit
-		<= Label $mol_view
-			sub /
-				^ type_and_name
-				^ value_and_id
-	self_link /
-		<= Link_picture $ss_blocks_noedit
-			sub /
-				<= Circle_and_line
-				<= Right_line $ss_blocks_noedit
-					minimal_width 0
-					minimal_height 0
-					sub /
-						<= Chevron $mol_icon_chevron_down 
-		<= Label
-	links /$ss_linkpad_link
-	links_with_slots /
-	slot_value*? \
-	slot_focused_or_hovered*? false
-	add_new_link* null
-	replace* null
-	replace_to_link* null
-	Slot* $mol_view
-		sub /
-			<= Slot_block* $ss_blocks_block
-	links_view /
-		<= Links $mol_view
-			sub /
-				^ links_with_slots
-	Connected_link* $mol_view
-		sub /
-			<= Slot*
-			<= Connected_link_row* $mol_view
-				sub /
-					<= Left_line* $ss_blocks_noedit sub / \
-					<= connected_link* null
-	to_link_gap / <= To_link_gap $ss_blocks_noedit sub / \
-	to_link_view /
-		<= To_link $mol_view
-			sub /
-				^ to_link_gap
-				<= to_link null
-		<= Slot_to_link $mol_view
-	sub /
-		^ from_view /
-			<= From_id $ss_blocks_noedit
-				sub / 
-					\from:
-					<= from_id
-		^ self_view
-		^ to_link_view
-		^ links_view
-	attr *
-		node <= is_node true
-		hide-last-line <= hide_last_line? true
-		has-links <= has_links true
-		has-name <= has_name true
-	style *
-		^
-		--color <= color \transparent
-		--semitransporent <= semitransporent \transparent
-		--typename <= type_name_before \
-		--linecolor \rgba(255,255,255,0.1)
-		- --linecolor \dimgray
-		- --linecolor <= color
-
-$ss_linkpad_link_type $ss_linkpad_link_default
-	icon \⭐
-	Label $mol_view
-		sub /
-			<= Name
-			<= Link_id
+		contentEditable false
 
 $mol_pop $mol_view
 	showed? false
@@ -287,16 +117,6 @@ $mol_pop_bubble $mol_view
 		^
 		mol_pop_align <= align \
 		tabindex 0
-
-$mol_pop_over $mol_pop
-	showed <= hovered? false
-	attr *
-		^
-		tabindex 0
-	event *
-		^
-		mouseenter?event <=> event_show?event null
-		mouseleave?event <=> event_hide?event null
 
 $mol_speck $mol_view
 	attr *
@@ -402,6 +222,35 @@ $mol_string $mol_view
 			mod_ctrl <= submit_with_ctrl false
 			key * enter?event <=> submit?event null
 
+$mol_svg $mol_view
+	dom_name \svg
+	dom_name_space \http://www.w3.org/2000/svg
+	font_size 16
+	font_family \
+	style_size *
+
+$mol_svg_root $mol_svg
+	dom_name \svg
+	attr *
+		^
+		viewBox <= view_box \0 0 100 100
+		preserveAspectRatio <= aspect \xMidYMid
+
+$mol_svg_path $mol_svg
+	dom_name \path
+	attr *
+		^
+		d <= geometry \
+
+
+$mol_icon $mol_svg_root
+	view_box \0 0 24 24
+	minimal_width 16
+	minimal_height 16
+	sub /
+		<= Path $mol_svg_path
+			geometry <= path \
+
 $mol_icon_dots_vertical $mol_icon path \M12,16C13.1,16 14,16.9 14,18C14,19.1 13.1,20 12,20C10.9,20 10,19.1 10,18C10,16.9 10.9,16 12,16M12,10C13.1,10 14,10.9 14,12C14,13.1 13.1,14 12,14C10.9,14 10,13.1 10,12C10,10.9 10.9,10 12,10M12,4C13.1,4 14,4.9 14,6C14,7.1 13.1,8 12,8C10.9,8 10,7.1 10,6C10,4.9 10.9,4 12,4Z
 
 $mol_paragraph $mol_view
@@ -443,17 +292,6 @@ $mol_nav $mol_plugin
 		^
 		keydown?event <=> event_key?event null
 
-$mol_list $mol_view
-	render_visible_only true
-	render_over 0
-	sub <= rows /$mol_view
-	Empty $mol_view
-	Gap_before $mol_view style * paddingTop <= gap_before 0
-	Gap_after $mol_view style * paddingTop <= gap_after 0
-	view_window /
-		0
-		0
-
 $mol_select $mol_pick
 	dictionary? *
 	options /string
@@ -487,41 +325,15 @@ $mol_select $mol_pick
 		enabled <= enabled true
 	Trigger_icon $mol_icon_dots_vertical
 
-$ss_editor_noedit $mol_view
-	field *
-		^
-		contentEditable false
-
-$ss_editor_node_data $mol_object2
-	id \
-	value? \
-	type? \
-	child_ids? /string
-	child_nodes? /$ss_editor_node_data
-	tree? $mol_tree2_empty
-	multiple? false
-	changeable? false
-	binded? false
-	data_tree*? $mol_tree2_empty
-	data_value*? \
-	data_type*? \
-	data_child_ids*? /string
-	data_child_nodes*? /$ss_editor_node_data
-	data_changeable*? false
-	data_multiple*? false
-
-$ss_editor_node_ui_default $mol_view
-	id \
-	data_node $ss_editor_node_data
-	sub /
-		<= Self_body $mol_view 
-			sub / <= Block $ss_blocks_block
-			minimal_width 32
-		<= Children $mol_list
-			rows? <= children /$ss_editor_node_ui
+$mol_pop_over $mol_pop
+	showed <= hovered? false
 	attr *
 		^
-		focused <= block_focused false
+		tabindex 0
+	event *
+		^
+		mouseenter?event <=> event_show?event null
+		mouseleave?event <=> event_hide?event null
 
 $ss_editor_node_ui_pop $ss_editor_node_ui_default
 	sub /
@@ -604,12 +416,11 @@ $ss_editor_node_ui_prop $ss_editor_node_ui_pop
 		<= Children
 	Anchor $mol_view
 		sub <= self_sub / 
-			<= Self_block $mol_view
-				sub / <= Block
+			<= Block
 			<= Icons $ss_editor_noedit sub <= icons /
 				<= Icon_multiple $mol_icon_key_variant
 				<= Icon_changeable $mol_icon_cached
-	tail_ui_node_type null
+	tail_ui_node_type \
 	tail_ui_node_nullable null
 	tail_ui_node $ss_editor_node_ui
 		List_body => List_body
@@ -644,9 +455,6 @@ $ss_editor_node_ui_prop $ss_editor_node_ui_pop
 					<= New_item_pos*1 $mol_button_minor
 						title <= pos_title* \
 						click? <=> add_in_pos*? null
-	attr *
-		^
-		tail <= tail_ui_node_type
 
 $mol_check_list $mol_view
 	Option* $mol_check
@@ -754,8 +562,7 @@ $ss_editor_node_ui_object $ss_editor_node_ui_pop
 		sub /
 			<= Object_label $mol_view 
 				sub <= object_label /
-					<= Label_block $mol_view
-						sub / <= Block
+					<= Block
 					<= Icons $ss_editor_noedit sub <= icons /
 						<= Icon_multiple $mol_icon_key_variant
 			<= Class_label $mol_view 
@@ -800,6 +607,18 @@ $ss_editor_node_ui_component $ss_editor_node_ui_object
 						sub / \$
 					<= Object_label
 			<= Class_label
+
+$ss_blocks $mol_object2
+	Block* $ss_blocks_block
+	beforeinput? null
+	keydown? null
+	input? null
+	dragenter? null
+	drop? null
+	drag? null
+	dragleave? null
+	paste? null
+	cut? null
 
 $ss_editor_node_ui $mol_ghost
 	id \
@@ -1088,8 +907,7 @@ $ss_blocks_contenteditable $mol_view
 $ss_editor_node_ui_list $ss_editor_node_ui_default
 	Block_fabric* $ss_blocks_block
 	sub /
-		<= Self_body $ss_editor_noedit 
-			sub / \: list
+		<= Self_body $ss_editor_noedit sub / \: list
 
 $ss_editor $mol_scroll
 	title \$ss_editor
@@ -1164,228 +982,3 @@ $ss_editor $mol_scroll
 		\		<= Button_foot $mol_button_minor
 		\			title \Footer Button
 		\
-
-$ss_linkpad_link_undef $ss_linkpad_link_default
-	icon \❔
-	insert_view /
-		<= Insert_row $ss_blocks_noedit
-			sub /
-				<= Insert_button $ss_blocks_noedit
-					sub /
-						<= Insert $mol_button_minor
-							title \New
-							minimal_height 0
-							minimal_width 0
-							click? <=> insert? null
-				<= Insert_label $ss_blocks_noedit
-					sub / \[Enter]
-				-
-					<= Existed_button $ss_blocks_noedit
-						sub /
-							<= Existed $mol_button_minor
-								title \Existed
-								minimal_height 0
-								click? <=> insert? null
-					<= Existed_label $ss_blocks_noedit
-						sub / \[=]
-	name_focused? false
-	Label $mol_pop_over
-		showed? <= name_focused? false
-		align <= test \bottom_right
-		- hovered => self_hovered
-		Anchor <= Anchor $mol_view
-			sub /
-				<= Name
-				- ^ insert_view
-				<= Link_id
-		bubble_content / 
-			<= Autocomplete_bubble_content $ss_editor_noedit
-				sub / 
-					<= Bubble_pane
-	- Label $mol_view
-		sub /
-			<= Name
-			^ insert_view
-			<= Link_id
-	Link_id $ss_blocks_noedit
-		sub / \?
-	- Autocomplete_bubble_content $ss_editor_noedit
-		sub / 
-			<= Bubble_pane
-			- <= Bubble_scroll $mol_scroll
-				sub <= bubble_content_autocomplete /
-					<= Bubble_pane
-			- <= Autocomplete_footer $mol_view
-				sub <= autocomplete_footer /
-	autocomplete false
-	Autocomplete $mol_select
-		no_options_message \Not found
-		event_select*? <=> event_select*? null
-		Bubble_pane => Bubble_pane
-		dictionary <= select_dict *
-		filter_pattern <= filter_pattern \
-		options_filtered => options_filtered
-
-$ss_linkpad_link_page $ss_linkpad_link_default
-	value_and_id /
-		<= Value
-		<= Link_id
-	sub /
-		<= Page $mol_page
-			head /
-				^ from_view
-				^ self_view
-			body /
-				^ links_view
-
-$ss_linkpad_link $mol_ghost
-	Sub <= Root $mol_view
-	ui_type \default
-	Link_data* null
-	variants *
-		default <= Default $ss_linkpad_link_default
-			Link_data* <= Link_data*
-			add_new_link* <= add_new_link* null
-			replace* <= replace* null
-			replace_to_link* <= replace_to_link* null
-			hide_contain? <=> hide_contain? false
-			ui_id <= ui_id \
-			all_link_ids? <= all_link_ids? /string
-			data <= data null
-			- type_data <= type_data null
-			Block* <= Block* null
-			to_link <= to_link? null
-			links <= links /$ss_linkpad_link
-			Name_block => Default_name_block
-		type_link <= Type_link $ss_linkpad_link_type
-			Link_data* <= Link_data*
-			add_new_link* <= add_new_link*
-			replace* <= replace*
-			replace_to_link* <= replace_to_link*
-			hide_contain? <=> hide_contain?
-			ui_id <= ui_id
-			all_link_ids? <= all_link_ids?
-			data <= data
-			- type_data <= type_data
-			Block* <= Block*
-			to_link <= to_link?
-			links <= links
-			Name_block => Type_name_block
-		undef <= Undef $ss_linkpad_link_undef
-			Link_data* <= Link_data*
-			add_new_link* <= add_new_link*
-			replace* <= replace*
-			replace_to_link* <= replace_to_link*
-			hide_contain? <=> hide_contain?
-			ui_id <= ui_id
-			all_link_ids? <= all_link_ids?
-			data <= data
-			- type_data <= type_data
-			Block* <= Block*
-			to_link <= to_link?
-			links <= links
-			Name_block => Undef_name_block
-		page <= Page $ss_linkpad_link_page
-			Link_data* <= Link_data*
-			add_new_link* <= add_new_link*
-			replace* <= replace*
-			replace_to_link* <= replace_to_link*
-			hide_contain? <=> hide_contain?
-			ui_id <= ui_id
-			all_link_ids? <= all_link_ids?
-			data <= data
-			- type_data <= type_data
-			Block* <= Block*
-			to_link <= to_link?
-			links <= links
-			Name_block => Page_name_block
-
-$mol_icon_pencil $mol_icon path \M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z
-
-$mol_icon_cursor_move $mol_icon path \M13,6V11H18V7.75L22.25,12L18,16.25V13H13V18H16.25L12,22.25L7.75,18H11V13H6V16.25L1.75,12L6,7.75V11H11V6H7.75L12,1.75L16.25,6H13Z
-
-$ss_linkpad $mol_book2
-	color_gen $ss_linkpad_color_generator
-	raw_gql_path? \
-	right_link_id? \
-	pages /
-		<= Contenteditable_user $ss_blocks_contenteditable
-			Body <= Root_user_link? null
-			Block* => Block*
-			Blocks => Blocks
-		<= Contenteditable_package $ss_blocks_contenteditable
-			Body <= Root_package_link? null
-			Blocks <= Blocks
-	Bubble $mol_view
-		sub /
-			<= Tools $mol_pop_bubble
-				content /
-					<= Tools_list $mol_list
-						sub /
-							<= Trash $mol_button_minor
-								sub / <= Trash_icon $mol_icon_trash_can_outline
-							<= Edit $mol_button_minor
-								sub / <= Edit_icon $mol_icon_pencil
-							<= Move $mol_button_minor
-								sub / <= Move_icon $mol_icon_cursor_move
-	all_link_ids? /string
-	Link_data* null
-	Link* $ss_linkpad_link
-		Link_data* <= Link_data*
-		add_new_link* <= add_new_link* null
-		replace* <= replace* null
-		replace_to_link* <= replace_to_link* null
-		hide_contain? <=> hide_contain? false
-		ui_id <= ui_id* \
-		all_link_ids? <= all_link_ids?
-		data <= link_data_by_ui_id* null
-		Block* <= Block*
-		to_link <= to_link*? null
-		links <= link_links* /$ss_linkpad_link
-	link_links_id*? /string
-- $ss_linkpad_page $mol_page
-	sub /
-		<= Head
-		<= Bubble $mol_view
-			sub <= bubble /
-		<= Body
-		<= Foot
-
-$ss_links $mol_book2
-	title \Links
-	Placeholder null
-	submit_button /
-		<= Submit $mol_button_minor
-			title \Submit
-			event_click? <=> submit? null
-			- enabled <= submit_allowed false
-		<= Demo $mol_button_minor
-			title \Demo
-			event_click? <=> demo? null
-	Editor* $ss_linkpad
-		pages => editor_pages*
-		hide_contain? <=> hide_contain?
-		raw_gql_path? <= opened_path? \
-	Hide_contain $mol_check_box
-		title \Collapse contain
-		checked? <=> hide_contain? false
-	opened_editor_pages /
-	pages /
-		<= Menu $mol_page
-			title \Links
-			body /
-				- <= Label $mol_text
-					text \Preloaded demo is shown. Submit data to connect to Deep.
-				<= Gql_path_field $mol_form_field
-					name \GQL path
-					- bid <= gql_bid \Required
-					Content <= Gql_path $mol_string
-						value? <=> raw_gql_path? \
-						- value? <=> gql_path_draft? \
-				- <= Token_field $mol_form_field
-					name \JWT token optional
-					control <= Token $mol_string
-						value? <=> jwt_token? \
-				- ^ submit_button /
-				- <= Hide_contain
-		^ opened_editor_pages

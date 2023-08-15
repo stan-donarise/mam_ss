@@ -29,33 +29,20 @@ $ss_editor_node_data $mol_object2
 $mol_ghost $mol_view
 	Sub $mol_view
 
-$ss_blocks_noedit $mol_view
-	field *
-		^
-		contentEditable false
-
 $ss_blocks_block $mol_view
-	- minimal_height 25
-	Placeholder $ss_blocks_noedit
-		sub / \test
+	minimal_height 25
 	sub /
-		<= default_value \default_block_value
-	value_setted? \default_block_value_changed
-	value_changed? \default_block_value_changed
+		<= value? \default_block_value
+	value_changed? \
 	attr *
 		^
 		focus-state <= focus_state? \blurred
-		empty <= empty? false
 	style *
 		^
-		--before <= before_content \
 		--after <= after_content \
-		- color <= color \var(--mol_theme_text)
-		opacity <= opacity 1
 	visible_placeholder \
 	placeholder \
 	on_ctrl_x?event null
-	keydown_enter?event null
 	before_any_input?event null
 	before_insert_text?event null
 	-
@@ -76,8 +63,6 @@ $ss_blocks_block $mol_view
 	-
 	focused? false
 	hovered? false
-	focused_or_hovered false
-	on_focused_or_hovered* null
 	focus null
 
 $mol_list $mol_view
@@ -431,12 +416,11 @@ $ss_editor_node_ui_prop $ss_editor_node_ui_pop
 		<= Children
 	Anchor $mol_view
 		sub <= self_sub / 
-			<= Self_block $mol_view
-				sub / <= Block
+			<= Block
 			<= Icons $ss_editor_noedit sub <= icons /
 				<= Icon_multiple $mol_icon_key_variant
 				<= Icon_changeable $mol_icon_cached
-	tail_ui_node_type null
+	tail_ui_node_type \
 	tail_ui_node_nullable null
 	tail_ui_node $ss_editor_node_ui
 		List_body => List_body
@@ -471,9 +455,6 @@ $ss_editor_node_ui_prop $ss_editor_node_ui_pop
 					<= New_item_pos*1 $mol_button_minor
 						title <= pos_title* \
 						click? <=> add_in_pos*? null
-	attr *
-		^
-		tail <= tail_ui_node_type
 
 $mol_check_list $mol_view
 	Option* $mol_check
@@ -581,8 +562,7 @@ $ss_editor_node_ui_object $ss_editor_node_ui_pop
 		sub /
 			<= Object_label $mol_view 
 				sub <= object_label /
-					<= Label_block $mol_view
-						sub / <= Block
+					<= Block
 					<= Icons $ss_editor_noedit sub <= icons /
 						<= Icon_multiple $mol_icon_key_variant
 			<= Class_label $mol_view 
@@ -927,8 +907,7 @@ $ss_blocks_contenteditable $mol_view
 $ss_editor_node_ui_list $ss_editor_node_ui_default
 	Block_fabric* $ss_blocks_block
 	sub /
-		<= Self_body $ss_editor_noedit 
-			sub / \: list
+		<= Self_body $ss_editor_noedit sub / \: list
 
 $ss_editor $mol_scroll
 	title \$ss_editor

@@ -1061,23 +1061,15 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
-    class $ss_blocks_noedit extends $mol_view {
-        field(): Record<string, any>;
-    }
-}
-
-declare namespace $ {
     class $ss_blocks_block extends $mol_view {
-        Placeholder(): $ss_blocks_noedit;
+        minimal_height(): number;
         sub(): readonly any[];
-        value_setted(next?: any): string;
         value_changed(next?: any): string;
         attr(): Record<string, any>;
         style(): Record<string, any>;
         visible_placeholder(): string;
         placeholder(): string;
         on_ctrl_x(event?: any): any;
-        keydown_enter(event?: any): any;
         before_any_input(event?: any): any;
         before_insert_text(event?: any): any;
         beforeinput(next?: any): any;
@@ -1092,45 +1084,27 @@ declare namespace $ {
         event(): Record<string, any>;
         focused(next?: any): boolean;
         hovered(next?: any): boolean;
-        focused_or_hovered(): boolean;
-        on_focused_or_hovered(id: any): any;
         focus(): any;
-        default_value(): string;
+        value(next?: any): string;
         focus_state(next?: any): string;
-        empty(next?: any): boolean;
-        before_content(): string;
         after_content(): string;
-        opacity(): number;
         mouseout(next?: any): any;
         mouseover(next?: any): any;
     }
-}
-
-declare namespace $ {
-    let $mol_action: typeof $mol_wire_method;
 }
 
 declare namespace $.$$ {
     type $ss_blocks_block_focus_states = 'focused' | 'setting' | 'blurred';
     type $ss_blocks_block_id = any;
     function $ss_blocks_block_anchor_el(): HTMLElement;
-    function $ss_blocks_block_trim(str: string): string;
     class $ss_blocks_block extends $.$ss_blocks_block {
-        br(): HTMLBRElement;
         sub(): readonly any[];
-        update_value(data_value: string): void;
-        input(e?: any): void;
-        before_content(): string;
-        empty(): boolean;
+        after_content(): string;
         visible_placeholder(): string;
-        auto(): void;
-        set_focused_or_hovered(args: {
-            focused?: boolean;
-            hovered?: boolean;
-        }): void;
         focus_state(next?: $ss_blocks_block_focus_states): $ss_blocks_block_focus_states;
-        focus(pos?: 'start' | 'end'): Promise<void>;
-        beforeinput(e?: InputEvent): any;
+        focus(): Promise<void>;
+        input(e?: any): void;
+        beforeinput(e?: any): any;
         on_ctrl_x(e?: any): void;
         keydown(e?: any): any;
         dragenter(e: any): void;
@@ -1141,8 +1115,6 @@ declare namespace $.$$ {
         cut(e: any): void;
         mouseover(): void;
         mouseout(): void;
-        hovered(next?: any): boolean;
-        focused(next?: any): boolean;
     }
 }
 
@@ -1589,6 +1561,10 @@ declare namespace $ {
 
 declare namespace $ {
     function $mol_wire_sync<Host extends object>(obj: Host): (Host extends (...args: infer Args) => infer Res ? Res extends Promise<infer Res2> ? (...args: Args) => Res2 : Host : {}) & { [key in keyof Host]: Host[key] extends (...args: infer Args_1) => Promise<infer Res_1> ? (...args: Args_1) => Res_1 : Host[key]; };
+}
+
+declare namespace $ {
+    let $mol_action: typeof $mol_wire_method;
 }
 
 declare namespace $ {
@@ -2267,7 +2243,7 @@ declare namespace $ {
         id(): string;
         sub(): readonly any[];
         Anchor(): $mol_view;
-        tail_ui_node_type(): any;
+        tail_ui_node_type(): string;
         tail_ui_node_nullable(): any;
         List_body(): $ss_editor_noedit;
         List_children(): $$.$mol_list;
@@ -2276,8 +2252,6 @@ declare namespace $ {
         tail_ui_node(): $$.$ss_editor_node_ui;
         bubble_content(): readonly any[];
         Add_list_item_popover(): $$.$mol_pop_over;
-        attr(): Record<string, any>;
-        Self_block(): $mol_view;
         Icon_multiple(): $mol_icon_key_variant;
         Icon_changeable(): $mol_icon_cached;
         icons(): readonly any[];
@@ -2320,10 +2294,10 @@ declare namespace $.$$ {
         changeable(next?: boolean): boolean;
         multiple(next?: boolean): boolean;
         icons(): ($mol_icon_key_variant | $mol_icon_cached)[];
-        tail_ui_node_type(): string | null;
+        tail_ui_node_type(): string;
         tail_ui_node_nullable(): $.$ss_editor_node_ui | null;
         tail_ui_node(): $.$ss_editor_node_ui | $ss_editor_node_ui;
-        self_sub(): $mol_view[];
+        self_sub(): ($ss_blocks_block | $mol_list | $ss_editor_noedit)[];
         sub(): ($mol_list | $mol_pop_over)[];
         bubble_content(): any[];
         new_item_positions(): $mol_button_minor[];
@@ -2644,7 +2618,6 @@ declare namespace $ {
         bubble_content(): readonly any[];
         autocomplete_footer(): readonly any[];
         Props(): $mol_view;
-        Label_block(): $mol_view;
         Icon_multiple(): $mol_icon_key_variant;
         icons(): readonly any[];
         Icons(): $ss_editor_noedit;
@@ -2670,7 +2643,7 @@ declare namespace $.$$ {
         multiple(next?: boolean): boolean;
         icons(): $mol_icon_key_variant[];
         class_ui_node(): $.$ss_editor_node_ui;
-        object_label(): $mol_view[];
+        object_label(): ($ss_blocks_block | $ss_editor_noedit)[];
         type_tree(): $mol_tree2;
         clear(): void;
         select_value(next?: any): string;
