@@ -1,4 +1,4 @@
-name: $ss_linkpad_app
+name: $ss_editor
 
 on:
   workflow_dispatch:
@@ -16,10 +16,10 @@ jobs:
 
     - uses: hyoo-ru/mam_build@master2
       with:
-        package: 'ss/linkpad'
-        modules: 'app'
+        package: 'ss'
+        modules: 'editor'
 
     - uses: JamesIves/github-pages-deploy-action@4.1.7
       with:
         branch: gh-pages
-        folder: 'ss/linkpad/app/-'
+        folder: 'ss/editor/-'

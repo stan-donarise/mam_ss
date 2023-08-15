@@ -23,7 +23,7 @@ namespace $.$$ {
 		@ $mol_mem
 		object_label() {
 			return [
-				this.Label_block(),
+				this.Block(),
 				... this.icons().length > 0 ? [ this.Icons() ] : []
 			]
 		}

@@ -24,7 +24,7 @@ namespace $.$$ {
 
 		@ $mol_mem
 		tail_ui_node_type() {
-			return this.tail_ui_node_nullable()?.type() || null
+			return this.tail_ui_node_nullable()?.type() || ''
 		}
 
 		@ $mol_mem
@@ -54,7 +54,7 @@ namespace $.$$ {
 		@ $mol_mem
 		self_sub() {
 			return [
-				this.Self_block(),
+				this.Block(),
 				... this.icons().length > 0 ? [ this.Icons() ] : [],
 				... this.tail_ui_node_type() == 'list' ? [ this.Children(), this.List_body() ] :
 					this.tail_ui_node_type() == 'dict' ? [ this.Children(), this.Dict_body() ] : []

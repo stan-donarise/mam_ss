@@ -1,4 +1,0 @@
-$ss_blocks_noedit $mol_view
-	field *
-		^
-		contentEditable false

@@ -9,6 +9,9 @@ namespace $.$$ {
 			},
 		},
 		Children: {
+			flex: {
+				basis: '100%'
+			},
 			border: {
 				left: {
 					width: '1px',

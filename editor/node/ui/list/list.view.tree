@@ -1,5 +1,4 @@
 $ss_editor_node_ui_list $ss_editor_node_ui_default
 	Block_fabric* $ss_blocks_block
 	sub /
-		<= Self_body $ss_editor_noedit 
-			sub / \: list
+		<= Self_body $ss_editor_noedit sub / \: list

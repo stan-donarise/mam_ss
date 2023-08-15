@@ -16,12 +16,11 @@ $ss_editor_node_ui_prop $ss_editor_node_ui_pop
 		<= Children
 	Anchor $mol_view
 		sub <= self_sub / 
-			<= Self_block $mol_view
-				sub / <= Block
+			<= Block
 			<= Icons $ss_editor_noedit sub <= icons /
 				<= Icon_multiple $mol_icon_key_variant
 				<= Icon_changeable $mol_icon_cached
-	tail_ui_node_type null
+	tail_ui_node_type \
 	tail_ui_node_nullable null
 	tail_ui_node $ss_editor_node_ui
 		List_body => List_body
@@ -56,6 +55,3 @@ $ss_editor_node_ui_prop $ss_editor_node_ui_pop
 					<= New_item_pos*1 $mol_button_minor
 						title <= pos_title* \
 						click? <=> add_in_pos*? null
-	attr *
-		^
-		tail <= tail_ui_node_type

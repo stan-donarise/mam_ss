@@ -1,6 +1,0 @@
-$ss_linkpad_link_hover $mol_view
-	hovered? false
-	event *
-		^
-		mouseenter? <=> mouseenter? null
-		mouseleave? <=> mouseleave? null
