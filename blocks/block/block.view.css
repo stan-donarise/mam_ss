@@ -1,9 +1,24 @@
-[ss_blocks_block]::after {
+[ss_blocks_block]::before {
 	pointer-events: none;
-	content: var(--after);
+	content: var(--before);
 	opacity: .3;
 }
 
+/* [ss_blocks_block]::before {
+	pointer-events: none;
+	content: var(--before);
+	opacity: .3;
+} */
+
 [ss_blocks_block][focus-state="focused"] {
 	background: rgba(255,255,255,0.1);
+}
+
+[ss_blocks_block] {
+	white-space: pre-wrap;
+	display: block;
+}
+
+[ss_blocks_block][empty] {
+	/* caret-color: transparent; */
 }

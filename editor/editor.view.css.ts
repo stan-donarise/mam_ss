@@ -4,10 +4,13 @@ namespace $.$$ {
 		Contenteditable: {
 			outline: 'none',
 		},
-		padding: $mol_gap.block,
-		background: {
-			color: $mol_theme.card,
+		// padding: $mol_gap.block,
+		flex: {
+			grow: 0,
 		},
+		// background: {
+		// 	color: $mol_theme.card,
+		// },
 	})
 	
 }

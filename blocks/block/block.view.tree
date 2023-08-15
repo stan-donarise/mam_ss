@@ -1,17 +1,25 @@
 $ss_blocks_block $mol_view
-	minimal_height 25
+	- minimal_height 25
+	Placeholder $ss_blocks_noedit
+		sub / \test
 	sub /
-		<= value? \default_block_value
-	value_changed? \
+		<= default_value \default_block_value
+	value_setted? \default_block_value_changed
+	value_changed? \default_block_value_changed
 	attr *
 		^
 		focus-state <= focus_state? \blurred
+		empty <= empty? false
 	style *
 		^
+		--before <= before_content \
 		--after <= after_content \
+		- color <= color \var(--mol_theme_text)
+		opacity <= opacity 1
 	visible_placeholder \
 	placeholder \
 	on_ctrl_x?event null
+	keydown_enter?event null
 	before_any_input?event null
 	before_insert_text?event null
 	-
@@ -32,4 +40,6 @@ $ss_blocks_block $mol_view
 	-
 	focused? false
 	hovered? false
+	focused_or_hovered false
+	on_focused_or_hovered* null
 	focus null

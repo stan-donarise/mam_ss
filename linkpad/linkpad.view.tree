@@ -1,0 +1,46 @@
+$ss_linkpad $mol_book2
+	color_gen $ss_linkpad_color_generator
+	raw_gql_path? \
+	right_link_id? \
+	pages /
+		<= Contenteditable_user $ss_blocks_contenteditable
+			Body <= Root_user_link? null
+			Block* => Block*
+			Blocks => Blocks
+		<= Contenteditable_package $ss_blocks_contenteditable
+			Body <= Root_package_link? null
+			Blocks <= Blocks
+	Bubble $mol_view
+		sub /
+			<= Tools $mol_pop_bubble
+				content /
+					<= Tools_list $mol_list
+						sub /
+							<= Trash $mol_button_minor
+								sub / <= Trash_icon $mol_icon_trash_can_outline
+							<= Edit $mol_button_minor
+								sub / <= Edit_icon $mol_icon_pencil
+							<= Move $mol_button_minor
+								sub / <= Move_icon $mol_icon_cursor_move
+	all_link_ids? /string
+	Link_data* null
+	Link* $ss_linkpad_link
+		Link_data* <= Link_data*
+		add_new_link* <= add_new_link* null
+		replace* <= replace* null
+		replace_to_link* <= replace_to_link* null
+		hide_contain? <=> hide_contain? false
+		ui_id <= ui_id* \
+		all_link_ids? <= all_link_ids?
+		data <= link_data_by_ui_id* null
+		Block* <= Block*
+		to_link <= to_link*? null
+		links <= link_links* /$ss_linkpad_link
+	link_links_id*? /string
+- $ss_linkpad_page $mol_page
+	sub /
+		<= Head
+		<= Bubble $mol_view
+			sub <= bubble /
+		<= Body
+		<= Foot

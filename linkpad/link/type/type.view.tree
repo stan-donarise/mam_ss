@@ -1,0 +1,6 @@
+$ss_linkpad_link_type $ss_linkpad_link_default
+	icon \⭐
+	Label $mol_view
+		sub /
+			<= Name
+			<= Link_id

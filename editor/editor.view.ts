@@ -252,11 +252,13 @@ namespace $.$$ {
 		Ui_node_block( ui_id: $ss_editor_node_ui_id ) {
 			const block = this.Block( ui_id )
 			const data_id = this.data_id_from_ui_id( ui_id )
-			block.value = ()=> this.data_value( data_id )
+
+
+			block.value_changed = next => this.data_value( data_id, next )
+			block.update_value( this.data_value( data_id ) )
+
+
 			block.placeholder = ()=> this.data_type( data_id )
-			block.input = ()=> {
-				this.data_value( data_id, block.dom_node().textContent )
-			}
 			return block
 		}
 		

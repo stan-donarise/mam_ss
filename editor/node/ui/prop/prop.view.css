@@ -1,3 +1,10 @@
 [ss_editor_node_ui_prop] > [ss_editor_node_ui_prop_self_body] {
 	color: var(--mol_theme_text);
 }
+
+[ss_editor_node_ui_prop][tail="list"],
+[ss_editor_node_ui_prop][tail="dict"] {
+	flex-direction: column;
+	/* flex-wrap: wrap; */
+	/* width: min-content; */
+}

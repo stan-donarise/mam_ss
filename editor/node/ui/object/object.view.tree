@@ -22,7 +22,8 @@ $ss_editor_node_ui_object $ss_editor_node_ui_pop
 		sub /
 			<= Object_label $mol_view 
 				sub <= object_label /
-					<= Block
+					<= Label_block $mol_view
+						sub / <= Block
 					<= Icons $ss_editor_noedit sub <= icons /
 						<= Icon_multiple $mol_icon_key_variant
 			<= Class_label $mol_view 

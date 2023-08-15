@@ -1,0 +1,60 @@
+$ss_linkpad_link_undef $ss_linkpad_link_default
+	icon \❔
+	insert_view /
+		<= Insert_row $ss_blocks_noedit
+			sub /
+				<= Insert_button $ss_blocks_noedit
+					sub /
+						<= Insert $mol_button_minor
+							title \New
+							minimal_height 0
+							minimal_width 0
+							click? <=> insert? null
+				<= Insert_label $ss_blocks_noedit
+					sub / \[Enter]
+				-
+					<= Existed_button $ss_blocks_noedit
+						sub /
+							<= Existed $mol_button_minor
+								title \Existed
+								minimal_height 0
+								click? <=> insert? null
+					<= Existed_label $ss_blocks_noedit
+						sub / \[=]
+	name_focused? false
+	Label $mol_pop_over
+		showed? <= name_focused? false
+		align <= test \bottom_right
+		- hovered => self_hovered
+		Anchor <= Anchor $mol_view
+			sub /
+				<= Name
+				- ^ insert_view
+				<= Link_id
+		bubble_content / 
+			<= Autocomplete_bubble_content $ss_editor_noedit
+				sub / 
+					<= Bubble_pane
+	- Label $mol_view
+		sub /
+			<= Name
+			^ insert_view
+			<= Link_id
+	Link_id $ss_blocks_noedit
+		sub / \?
+	- Autocomplete_bubble_content $ss_editor_noedit
+		sub / 
+			<= Bubble_pane
+			- <= Bubble_scroll $mol_scroll
+				sub <= bubble_content_autocomplete /
+					<= Bubble_pane
+			- <= Autocomplete_footer $mol_view
+				sub <= autocomplete_footer /
+	autocomplete false
+	Autocomplete $mol_select
+		no_options_message \Not found
+		event_select*? <=> event_select*? null
+		Bubble_pane => Bubble_pane
+		dictionary <= select_dict *
+		filter_pattern <= filter_pattern \
+		options_filtered => options_filtered

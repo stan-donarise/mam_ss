@@ -1,0 +1,16 @@
+[ss_linkpad_link_page_page_head] {
+	align-items: center;
+}
+
+[ss_linkpad_link_page_page_body] {
+	padding-top: 0;
+}
+
+[ss_linkpad_link_page_page] {
+	flex-grow: 1;
+}
+
+[ss_linkpad_link_page_line_bottom] {
+	display: block;
+	margin-bottom: -1.25rem;
+}

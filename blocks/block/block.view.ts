@@ -21,51 +21,151 @@ namespace $.$$ {
 		}
 		return el
 	}
+	export function $ss_blocks_block_trim( str: string ){
+		return str?.at(-1) == '\n' ? str.slice(0, -1) : str
+	}
 
 
 	export class $ss_blocks_block extends $.$ss_blocks_block {
-
 		@ $mol_mem
-		sub() {
-			const value = this.value()
-			if( value && value != '\n' ) {
-				return [ value ]
-			}
-			return [] as readonly any[]
+		br() {
+			return document.createElement('br')
 		}
 
 		@ $mol_mem
-		after_content() {
+		sub() {
+			const value = this.default_value()
+			if( value && value != '\n' ) {
+				// return [ value + '\n' ]
+				// return [ value + '\n', this.br() ]
+				return [ value, this.br() ]
+			}
+			return [ this.br() ] as readonly any[]
+		}
+
+		@ $mol_action
+		update_value( data_value: string ) {
+			// const val = $ss_blocks_block_trim( data_value )
+			const val = data_value || '\n'
+			this.default_value = ()=> val
+			const innerText = this.dom_node()?.parentElement?.innerText
+			if ( val != innerText ) {
+				this.dom_node().innerHTML = val != '\n' ? val : '<br/>'
+			}
+		}
+
+		// inner_text() {
+		// 	const innerText = this.dom_node()?.parentElement?.innerText
+		// 	const trimmed = $ss_blocks_block_trim( innerText! )
+		// 	return trimmed
+		// }
+		// @ $mol_mem
+		// value_changed(next?: any) {
+		// 	$mol_wire_solid()
+		// 	return super.value_changed( next )
+		// 	// if ( next !== undefined ) return next as never
+		// 	// return "default_block_value_changed"
+		// }
+		input( e?: any ) {
+			const innerText = this.dom_node()?.parentElement?.innerText
+			this.value_changed( innerText )
+			// this.value_changed( this.inner_text() )
+		}
+		// auto() {
+		// 	this.value_changed()
+		// }
+
+		@ $mol_mem
+		before_content() {
 			return `"${ this.visible_placeholder() }"`
+		}
+		// @ $mol_mem
+		// after_content() {
+		// 	return `"${ this.visible_placeholder() }"`
+		// }
+		@ $mol_mem
+		empty() {
+			// console.log('this.empty()')
+			return ['','\n'].includes( this.value_changed() )
 		}
 		@ $mol_mem
 		visible_placeholder() {
 			const placeholder = this.placeholder()
-			return this.value() == '' ? placeholder : ''
+			return this.empty() ? placeholder : ''
 		}
 
+		auto() {
+			this.focused_or_hovered()
+		}
+		// @ $mol_mem
+		// focused_or_hovered() {
+		// 	$mol_wire_solid()
+		// 	const next = this.focused() || this.hovered()
+		// 	this.on_focused_or_hovered( next )
+		// 	return next
+		// }
+		@ $mol_action
+		set_focused_or_hovered( args: { focused?: boolean, hovered?: boolean } ) {
+			const { focused, hovered } = args
+			if ( focused === undefined ) {
+				this.on_focused_or_hovered( this.focused() || hovered )
+			} else {
+				this.on_focused_or_hovered( this.hovered() || focused )
+			}
+		}
+		
 		@ $mol_mem
 		focus_state( next?: $ss_blocks_block_focus_states ) {
 			if ( next == 'focused' ) { 
 				this.focused( true )
+				this.set_focused_or_hovered( { focused: true } )
 			} else {
 				this.focused( false )
+				this.set_focused_or_hovered( { focused: false } )
 			}
 			return next || "blurred"
 		}
 
-		async focus(): Promise<void> {
+		async focus( pos: 'start' | 'end' = 'end' ): Promise<void> {
 			this.focus_state( 'setting' )
-			const dom = this.dom_node()
+			const dom = this.dom_tree()
 			// wait until dom_node appended
-			if( dom.parentElement ) {
+
+			// export function focusInEnd(el: HTMLElement) {
+			// 	const selection = window.getSelection();
+			// 	const range = document.createRange();
+			// 	selection.removeAllRanges();
+			// 	let focusEl = el.lastChild
+			// 	if (isBR(focusEl) && focusEl.previousSibling) focusEl = focusEl.previousSibling //fix firefox, for chrome isn't need
+			// 	range.setEnd(focusEl, focusEl.textContent.length);
+			// 	range.collapse(false);
+			// 	selection.addRange(range);
+			//   }
+			if( 
+				dom?.parentElement?.innerText == this.value_changed() 
+				|| dom.parentElement && !this.value_changed() 
+			) {
+				// if( dom.parentElement ) {
 				const selection = window.getSelection()!
 				const range = document.createRange()
 				selection.removeAllRanges()
 				let focusEl = dom.lastChild!
 				if( ! focusEl ) focusEl = dom
 				if( focusEl?.nodeName == 'BR' && focusEl.previousSibling ) focusEl = focusEl.previousSibling //fix firefox, for chrome isn't need
-				range.setEnd( focusEl, focusEl.textContent?.length || 0 )
+				// console.log(focusEl)
+				// console.log('focusEl?.textContent?.length', focusEl?.textContent?.length)
+				// console.log('this.value_changed()', this.value_changed())
+				// console.log('focusEl?.textContent?.length || this.value_changed().length', focusEl?.textContent?.length || this.value_changed().length)
+				// range.setEnd( focusEl, 0 )
+				// range.setEnd( focusEl, this.value_changed().length )
+				// console.log(...dom.childNodes)
+				// setTimeout(() => {
+				// 	console.log(dom)
+				// 	console.log(...dom.childNodes)
+				// 	console.log(focusEl)
+				// }, 1000);
+				// range.setEnd( focusEl, focusEl?.textContent?.length || this.value_changed().length )
+				range.setEnd( focusEl, focusEl.textContent!.length )
 				range.collapse( false )
 				selection.addRange( range )
 				return
@@ -77,15 +177,15 @@ namespace $.$$ {
 			}
 		}
 
-		input( e?: any ) {
+		// input( e?: any ) {
 			// this.value(this.dom_node().textContent)
 			// this.value_changed(this.dom_node().textContent)
-		}
+		// }
 
-		beforeinput( e?: any ) {
+		beforeinput( e?: InputEvent ) {
 			const el = $ss_blocks_block_anchor_el()
 			if (el.parentElement != focus_el().parentElement) {
-			  e.preventDefault()
+			  e?.preventDefault()
 			  return
 			}
 
@@ -159,7 +259,10 @@ namespace $.$$ {
 				e.preventDefault()
 
 			} else if( e.key === 'Enter' ) {
-				// document.execCommand( 'insertLineBreak' )
+				const keydown_enter = this.keydown_enter( e )
+				if ( keydown_enter !== true ) {
+					document.execCommand( 'insertLineBreak' )
+				}
 				e.preventDefault()
 
 			} else if( e.ctrlKey ) {
@@ -201,6 +304,8 @@ namespace $.$$ {
 		paste(e: any) {
 			e.preventDefault()
 			
+			this.before_any_input( e )
+
 			const sel = document.getSelection()
 
 			if( sel?.rangeCount ) {
@@ -225,6 +330,9 @@ namespace $.$$ {
 				} )
 			}
 
+			const innerText = this.dom_node()?.parentElement?.innerText
+			this.value_changed( innerText )
+
 		}
 
 		cut(e: any) {
@@ -232,10 +340,23 @@ namespace $.$$ {
 
 		mouseover() {
 			this.hovered( true )
+			this.set_focused_or_hovered( { hovered: true } )
 		}
 
 		mouseout() {
 			this.hovered( false )
+			this.set_focused_or_hovered( { hovered: false } )
+		}
+
+		@ $mol_mem
+		hovered( next?: any ): boolean {
+			$mol_wire_solid()
+			return next
+		}
+		@ $mol_mem
+		focused( next?: any ): boolean {
+			$mol_wire_solid()
+			return next
 		}
 
 	}

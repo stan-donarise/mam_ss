@@ -1,9 +1,9 @@
 namespace $.$$ {
 
 	$mol_style_define( $ss_editor_node_ui_prop_sub, {
-		flex: {
-			wrap: 'wrap',
-		},
+		// flex: {
+		// 	wrap: 'wrap',
+		// },
 		Anchor: {
 			flex: {
 				direction: 'row'
