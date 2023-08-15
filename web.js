@@ -14870,7 +14870,7 @@ var $;
                 return ml;
             }
             default_data() {
-                const json = $mol_fetch.json('/ss/linkpad/data/default.json');
+                const json = $mol_fetch.json('/mam_ss/ss/linkpad/data/default.json');
                 return json;
             }
             deep_data() {
