@@ -1,6 +1,11 @@
 name: $ss_linkpad_app
 
-on: [workflow_dispatch, push, pull_request]
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+  schedule:
+  - cron: "0 7 * * *"
 
 jobs:
   build:
@@ -14,7 +19,7 @@ jobs:
         package: 'ss/linkpad'
         modules: 'app'
 
-    - uses: hyoo-ru/gh-deploy@v4.4.1
-      if: github.ref == 'refs/heads/master'
+    - uses: JamesIves/github-pages-deploy-action@4.1.7
       with:
+        branch: gh-pages
         folder: 'ss/linkpad/app/-'
