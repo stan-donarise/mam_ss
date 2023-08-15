@@ -874,107 +874,50 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
-    class $mol_span extends $mol_object2 {
-        readonly uri: string;
-        readonly source: string;
-        readonly row: number;
-        readonly col: number;
-        readonly length: number;
-        constructor(uri: string, source: string, row: number, col: number, length: number);
-        static unknown: $mol_span;
-        static begin(uri: string, source?: string): $mol_span;
-        static end(uri: string, source: string): $mol_span;
-        static entire(uri: string, source: string): $mol_span;
-        toString(): string;
-        toJSON(): {
-            uri: string;
-            row: number;
-            col: number;
-            length: number;
-        };
-        error(message: string, Class?: ErrorConstructor): Error;
-        span(row: number, col: number, length: number): $mol_span;
-        after(length?: number): $mol_span;
-        slice(begin: number, end?: number): $mol_span;
+    class $mol_book2 extends $mol_scroll {
+        menu_title(): string;
+        sub(): readonly $mol_view[];
+        minimal_width(): number;
+        Placeholder(): $mol_view;
+        Gap(id: any): $mol_view;
+        pages(): readonly $mol_view[];
     }
 }
 
 declare namespace $ {
-    class $mol_error_syntax extends SyntaxError {
-        reason: string;
-        line: string;
-        span: $mol_span;
-        constructor(reason: string, line: string, span: $mol_span);
-    }
-}
-
-declare namespace $ {
-    function $mol_tree2_from_string(this: $, str: string, uri?: string): $mol_tree2;
-}
-
-declare namespace $ {
-    function $mol_tree2_to_string(this: $, tree: $mol_tree2): string;
-}
-
-declare namespace $ {
-    type $mol_tree2_path = Array<string | number | null>;
-    type $mol_tree2_hack<Context> = (input: $mol_tree2, belt: $mol_tree2_belt<Context>, context: Context) => readonly $mol_tree2[];
-    type $mol_tree2_belt<Context> = Record<string, $mol_tree2_hack<Context>>;
-    class $mol_tree2 extends Object {
-        readonly type: string;
-        readonly value: string;
-        readonly kids: readonly $mol_tree2[];
-        readonly span: $mol_span;
-        constructor(type: string, value: string, kids: readonly $mol_tree2[], span: $mol_span);
-        static list(kids: readonly $mol_tree2[], span?: $mol_span): $mol_tree2;
-        list(kids: readonly $mol_tree2[]): $mol_tree2;
-        static data(value: string, kids?: readonly $mol_tree2[], span?: $mol_span): $mol_tree2;
-        data(value: string, kids?: readonly $mol_tree2[]): $mol_tree2;
-        static struct(type: string, kids?: readonly $mol_tree2[], span?: $mol_span): $mol_tree2;
-        struct(type: string, kids?: readonly $mol_tree2[]): $mol_tree2;
-        clone(kids: readonly $mol_tree2[], span?: $mol_span): $mol_tree2;
-        text(): string;
-        static fromString(str: string, uri?: string): $mol_tree2;
-        toString(): string;
-        insert(value: $mol_tree2 | null, ...path: $mol_tree2_path): $mol_tree2;
-        select(...path: $mol_tree2_path): $mol_tree2;
-        filter(path: string[], value?: string): $mol_tree2;
-        hack<Context extends {
-            span?: $mol_span;
-            [key: string]: unknown;
-        } = {}>(belt: $mol_tree2_belt<Context>, context?: Context): $mol_tree2[];
-        error(message: string, Class?: ErrorConstructor): Error;
-    }
-    class $mol_tree2_empty extends $mol_tree2 {
-        constructor();
-    }
-}
-
-declare namespace $ {
-    class $ss_editor_node_data extends $mol_object2 {
-        id(): string;
-        value(next?: any): string;
-        type(next?: any): string;
-        child_ids(next?: any): readonly string[];
-        child_nodes(next?: any): readonly $ss_editor_node_data[];
-        tree(next?: any): $mol_tree2_empty;
-        multiple(next?: any): boolean;
-        changeable(next?: any): boolean;
-        binded(next?: any): boolean;
-        data_tree(id: any, next?: any): $mol_tree2_empty;
-        data_value(id: any, next?: any): string;
-        data_type(id: any, next?: any): string;
-        data_child_ids(id: any, next?: any): readonly string[];
-        data_child_nodes(id: any, next?: any): readonly $ss_editor_node_data[];
-        data_changeable(id: any, next?: any): boolean;
-        data_multiple(id: any, next?: any): boolean;
-    }
+    let $mol_mem_cached: typeof $mol_wire_probe;
 }
 
 declare namespace $.$$ {
-    type $ss_editor_node_data_id = string;
-    class $ss_editor_node_data extends $.$ss_editor_node_data {
-        binded(next?: any): boolean;
+    class $mol_book2 extends $.$mol_book2 {
+        title(): string;
+        menu_title(): string;
+        sub(): readonly $mol_view[];
+        bring(): void;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    function $mol_array_shuffle<Item>(array: readonly Item[]): Item[];
+}
+
+declare namespace $.$$ {
+    class $ss_linkpad_color_generator {
+        private step;
+        private start;
+        private asset;
+        constructor();
+        private generateAsset;
+        get_next_hue(): number;
+        get_next_hsl(): {
+            h: number;
+            s: number;
+            l: number;
+        };
+        foresee(): number;
     }
 }
 
@@ -992,6 +935,43 @@ declare namespace $.$$ {
         title(): string;
         minimal_width(): number;
         minimal_height(): number;
+    }
+}
+
+declare namespace $ {
+    class $mol_store<Data> extends $mol_object2 {
+        data_default?: Data | undefined;
+        constructor(data_default?: Data | undefined);
+        data(next?: Data): NonNullable<Data> | (Data & null);
+        snapshot(next?: string): string;
+        value<Key extends keyof Data>(key: Key, next?: Data[Key]): Data[Key] & {};
+        selection<Key extends keyof Data>(key: Key, next?: number[]): number[];
+        sub<Key extends keyof Data, Lens extends $mol_store<Data[Key]> = $mol_store<NonNullable<Data[Key]>>>(key: Key, lens?: Lens): Lens;
+        reset(): void;
+        active(): boolean;
+    }
+}
+
+declare namespace $ {
+    interface Link_DTO {
+        id: string;
+        type_id: string;
+        from_id?: string;
+        to_id?: string;
+        name?: string;
+        val?: string;
+        hue?: number;
+        undef?: boolean;
+    }
+    class $ss_linkpad_link_data extends $mol_store<Link_DTO> {
+        id(next?: string): string;
+        type_id(next?: string): string;
+        from_id(): string;
+        to_id(): string;
+        val(next?: string): string;
+        hue(next?: number): number;
+        undef(next?: boolean): boolean;
+        name(next?: string): string;
     }
 }
 
@@ -1085,38 +1065,62 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $mol_list extends $mol_view {
-        render_visible_only(): boolean;
-        render_over(): number;
-        sub(): readonly $mol_view[];
-        Empty(): $mol_view;
-        Gap_before(): $mol_view;
-        Gap_after(): $mol_view;
-        view_window(): readonly any[];
-        rows(): readonly $mol_view[];
-        gap_before(): number;
-        gap_after(): number;
+    class $ss_linkpad_link_hover extends $mol_view {
+        hovered(next?: any): boolean;
+        event(): Record<string, any>;
+        mouseenter(next?: any): any;
+        mouseleave(next?: any): any;
     }
-}
-
-declare namespace $ {
-    function $mol_support_css_overflow_anchor(this: $): boolean;
-}
-
-declare namespace $ {
-    let $mol_mem_cached: typeof $mol_wire_probe;
 }
 
 declare namespace $.$$ {
-    class $mol_list extends $.$mol_list {
-        sub(): readonly $mol_view[];
-        render_visible_only(): boolean;
-        view_window(next?: [number, number]): [number, number];
-        gap_before(): number;
-        gap_after(): number;
-        sub_visible(): $mol_view[];
-        minimal_height(): number;
-        force_render(path: Set<$mol_view>): void;
+    class $ss_linkpad_link_hover extends $.$ss_linkpad_link_hover {
+        mouseenter(event?: MouseEvent): void;
+        mouseleave(event?: MouseEvent): void;
+    }
+}
+
+declare namespace $ {
+    class $mol_svg extends $mol_view {
+        dom_name(): string;
+        dom_name_space(): string;
+        font_size(): number;
+        font_family(): string;
+        style_size(): Record<string, any>;
+    }
+}
+
+declare namespace $ {
+    class $mol_after_timeout extends $mol_object2 {
+        delay: number;
+        task: () => void;
+        id: any;
+        constructor(delay: number, task: () => void);
+        destructor(): void;
+    }
+}
+
+declare namespace $ {
+    class $mol_state_time extends $mol_object {
+        static task(precision: number, reset?: null): $mol_after_timeout | $mol_after_frame;
+        static now(precision: number): number;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_svg extends $.$mol_svg {
+        computed_style(): Record<string, any>;
+        font_size(): number;
+        font_family(): any;
+    }
+}
+
+declare namespace $ {
+    class $mol_svg_root extends $mol_svg {
+        dom_name(): string;
+        attr(): Record<string, any>;
+        view_box(): string;
+        aspect(): string;
     }
 }
 
@@ -1124,32 +1128,276 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $ss_editor_node_ui_default extends $mol_view {
-        id(): string;
-        data_node(): $$.$ss_editor_node_data;
+    class $mol_svg_path extends $mol_svg {
+        dom_name(): string;
+        attr(): Record<string, any>;
+        geometry(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_icon extends $mol_svg_root {
+        view_box(): string;
+        minimal_width(): number;
+        minimal_height(): number;
+        sub(): readonly any[];
+        path(): string;
+        Path(): $mol_svg_path;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_icon_chevron extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_chevron_right extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_link extends $mol_view {
+        uri(): string;
+        dom_name(): string;
+        attr(): Record<string, any>;
+        sub(): readonly $mol_view_content[];
+        arg(): Record<string, any>;
+        event(): Record<string, any>;
+        uri_toggle(): string;
+        hint(): string;
+        hint_safe(): string;
+        target(): string;
+        file_name(): string;
+        current(): boolean;
+        event_click(event?: any): any;
+        click(event?: any): any;
+    }
+}
+
+declare namespace $ {
+    class $mol_state_arg extends $mol_object {
+        prefix: string;
+        static href(next?: string): string;
+        static href_normal(): string;
+        static href_absolute(): string;
+        static dict(next?: {
+            [key: string]: string | null;
+        }): Readonly<{
+            [key: string]: string;
+        }>;
+        static dict_cut(except: string[]): {
+            [key: string]: string;
+        };
+        static value(key: string, next?: string | null): string | null;
+        static link(next: Record<string, string | null>): string;
+        static prolog: string;
+        static separator: string;
+        static make_link(next: {
+            [key: string]: string | null;
+        }): string;
+        static go(next: {
+            [key: string]: string | null;
+        }): void;
+        static encode(str: string): string;
+        constructor(prefix?: string);
+        value(key: string, next?: string): string | null;
+        sub(postfix: string): $mol_state_arg;
+        link(next: Record<string, string | null>): string;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_link extends $.$mol_link {
+        uri_toggle(): string;
+        uri(): string;
+        uri_off(): string;
+        uri_native(): URL;
+        current(): boolean;
+        file_name(): string;
+        minimal_height(): number;
+        external(): boolean;
+        target(): '_self' | '_blank' | '_top' | '_parent' | string;
+        hint_safe(): string;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_icon_chevron_down extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $ss_blocks extends $mol_object2 {
+        Block(id: any): $$.$ss_blocks_block;
+        beforeinput(next?: any): any;
+        keydown(next?: any): any;
+        input(next?: any): any;
+        dragenter(next?: any): any;
+        drop(next?: any): any;
+        drag(next?: any): any;
+        dragleave(next?: any): any;
+        paste(next?: any): any;
+        cut(next?: any): any;
+    }
+}
+
+declare namespace $.$$ {
+    class $ss_blocks extends $.$ss_blocks {
+        constructor();
+        block_dom_name(): string;
+        Block(id: $ss_blocks_block_id): $ss_blocks_block;
+        block_from_node(node: Element): $ss_blocks_block;
+        block_from_sel(): $ss_blocks_block | undefined;
+        input(e?: any): void;
+        beforeinput(e?: any): void;
+        keydown(e?: any): void;
+        dragenter(e: any): void;
+        drop(e: any): void;
+        drag(e: any): void;
+        dragleave(e: any): void;
+        paste(e: any): void;
+        cut(e: any): void;
+    }
+}
+
+declare namespace $ {
+    class $ss_linkpad_link_default extends $mol_view {
+        ui_id(): any;
+        all_link_ids(next?: any): readonly string[];
+        Link_data(id: any): any;
+        type_name(): string;
+        hide_contain(next?: any): boolean;
+        from_id(): string;
+        link_id(): string;
+        data(): $ss_linkpad_link_data;
+        type_data(): $ss_linkpad_link_data;
+        Block(id: any): $$.$ss_blocks_block;
+        from_view(): readonly any[];
+        left_line(): readonly any[];
+        right_line(): readonly any[];
+        Icon(): $mol_view;
+        Name(): $mol_view;
+        self_view(): readonly any[];
+        type_and_name(): readonly any[];
+        value_and_id(): readonly any[];
+        self_node(): readonly any[];
+        self_link(): readonly any[];
+        links(): readonly $ss_linkpad_link[];
+        links_with_slots(): readonly any[];
+        slot_value(id: any, next?: any): string;
+        slot_focused_or_hovered(id: any, next?: any): boolean;
+        add_new_link(id: any): any;
+        replace(id: any): any;
+        replace_to_link(id: any): any;
+        Slot(id: any): $mol_view;
+        links_view(): readonly any[];
+        Connected_link(id: any): $mol_view;
+        to_link_gap(): readonly any[];
+        to_link_view(): readonly any[];
         sub(): readonly any[];
         attr(): Record<string, any>;
-        Block(): $$.$ss_blocks_block;
-        Self_body(): $mol_view;
-        children(): readonly $ss_editor_node_ui[];
-        Children(): $$.$mol_list;
-        block_focused(): boolean;
+        style(): Record<string, any>;
+        icon(): string;
+        Name_block(): $$.$ss_blocks_block;
+        self_sub(): readonly any[];
+        self_hovered(next?: any): boolean;
+        Self(): $$.$ss_linkpad_link_hover;
+        Type(): $ss_blocks_noedit;
+        name(): string;
+        Name_disabled(): $ss_blocks_noedit;
+        Value_block(): $$.$ss_blocks_block;
+        Value(): $mol_view;
+        Link_id(): $ss_blocks_noedit;
+        arg_path(): any;
+        close_panel(): any;
+        Open_icon(): $mol_icon_chevron_right;
+        Open(): $$.$mol_link;
+        Open_block(): $ss_blocks_noedit;
+        Circle(): $ss_blocks_noedit;
+        Line_bottom(): $ss_blocks_noedit;
+        Circle_and_line(): $ss_blocks_noedit;
+        Label(): $mol_view;
+        Chevron(): $mol_icon_chevron_down;
+        Right_line(): $ss_blocks_noedit;
+        Link_picture(): $ss_blocks_noedit;
+        Slot_block(id: any): $$.$ss_blocks_block;
+        Links(): $mol_view;
+        Left_line(id: any): $ss_blocks_noedit;
+        connected_link(id: any): any;
+        Connected_link_row(id: any): $mol_view;
+        To_link_gap(): $ss_blocks_noedit;
+        to_link(): any;
+        To_link(): $mol_view;
+        Slot_to_link(): $mol_view;
+        From_id(): $ss_blocks_noedit;
+        is_node(): boolean;
+        hide_last_line(next?: any): boolean;
+        has_links(): boolean;
+        has_name(): boolean;
+        color(): string;
+        semitransporent(): string;
+        type_name_before(): string;
     }
 }
 
 declare namespace $.$$ {
-    class $ss_editor_node_ui_default extends $.$ss_editor_node_ui_default {
-        block_focused(): boolean;
+    class $ss_linkpad_link_default extends $.$ss_linkpad_link_default {
+        type_data(): $ss_linkpad_link_data;
+        type_name(): string;
+        type_name_before(): string;
+        from_view(): readonly any[];
+        self_view(): readonly any[];
+        to_link_gap(): readonly any[];
+        self_sub(): readonly any[];
+        connected_link(pos: number): $.$ss_linkpad_link;
+        links_with_slots(): readonly any[];
+        has_links(): boolean;
+        is_node(): boolean;
+        to_link_view(): readonly any[];
+        Name_block(): $ss_blocks_block;
         auto(): void;
+        slot_focused_or_hovered(i: number, next?: any): boolean;
+        Slot_block(i: number): $ss_blocks_block;
+        Type_block(): $ss_blocks_block;
+        color(): string;
+        semitransporent(): string;
+        Value_block(): $ss_blocks_block;
+        name(): string;
+        has_name(): boolean;
+        type_and_name(): readonly any[];
+        value_and_id(): readonly any[];
+        arg_path(): string | null;
+        close_panel(): string;
     }
+}
+
+declare namespace $ {
 }
 
 declare namespace $.$$ {
 }
 
 declare namespace $ {
-    class $ss_editor_noedit extends $mol_view {
-        field(): Record<string, any>;
+    class $ss_linkpad_link_type extends $ss_linkpad_link_default {
+        icon(): string;
+        Label(): $mol_view;
+    }
+}
+
+declare namespace $.$$ {
+    class $ss_linkpad_link_type extends $.$ss_linkpad_link_type {
+        color(): string;
+        semitransporent(): string;
     }
 }
 
@@ -1206,6 +1454,28 @@ declare namespace $.$$ {
             width: number;
             height: number;
         };
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_pop_over extends $mol_pop {
+        showed(): boolean;
+        attr(): Record<string, any>;
+        event(): Record<string, any>;
+        hovered(next?: any): boolean;
+        event_show(event?: any): any;
+        event_hide(event?: any): any;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_pop_over extends $.$mol_pop_over {
+        event_show(event?: MouseEvent): void;
+        event_hide(event?: MouseEvent): void;
+        showed(): boolean;
     }
 }
 
@@ -1754,75 +2024,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $mol_svg extends $mol_view {
-        dom_name(): string;
-        dom_name_space(): string;
-        font_size(): number;
-        font_family(): string;
-        style_size(): Record<string, any>;
-    }
-}
-
-declare namespace $ {
-    class $mol_after_timeout extends $mol_object2 {
-        delay: number;
-        task: () => void;
-        id: any;
-        constructor(delay: number, task: () => void);
-        destructor(): void;
-    }
-}
-
-declare namespace $ {
-    class $mol_state_time extends $mol_object {
-        static task(precision: number, reset?: null): $mol_after_timeout | $mol_after_frame;
-        static now(precision: number): number;
-    }
-}
-
-declare namespace $.$$ {
-    class $mol_svg extends $.$mol_svg {
-        computed_style(): Record<string, any>;
-        font_size(): number;
-        font_family(): any;
-    }
-}
-
-declare namespace $ {
-    class $mol_svg_root extends $mol_svg {
-        dom_name(): string;
-        attr(): Record<string, any>;
-        view_box(): string;
-        aspect(): string;
-    }
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
-    class $mol_svg_path extends $mol_svg {
-        dom_name(): string;
-        attr(): Record<string, any>;
-        geometry(): string;
-    }
-}
-
-declare namespace $ {
-    class $mol_icon extends $mol_svg_root {
-        view_box(): string;
-        minimal_width(): number;
-        minimal_height(): number;
-        sub(): readonly any[];
-        path(): string;
-        Path(): $mol_svg_path;
-    }
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
     class $mol_icon_dots_vertical extends $mol_icon {
         path(): string;
     }
@@ -2006,6 +2207,41 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
+    class $mol_list extends $mol_view {
+        render_visible_only(): boolean;
+        render_over(): number;
+        sub(): readonly $mol_view[];
+        Empty(): $mol_view;
+        Gap_before(): $mol_view;
+        Gap_after(): $mol_view;
+        view_window(): readonly any[];
+        rows(): readonly $mol_view[];
+        gap_before(): number;
+        gap_after(): number;
+    }
+}
+
+declare namespace $ {
+    function $mol_support_css_overflow_anchor(this: $): boolean;
+}
+
+declare namespace $.$$ {
+    class $mol_list extends $.$mol_list {
+        sub(): readonly $mol_view[];
+        render_visible_only(): boolean;
+        view_window(next?: [number, number]): [number, number];
+        gap_before(): number;
+        gap_after(): number;
+        sub_visible(): $mol_view[];
+        minimal_height(): number;
+        force_render(path: Set<$mol_view>): void;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
     class $mol_select extends $mol_pick {
         dictionary(next?: any): Record<string, any>;
         options(): readonly string[];
@@ -2060,25 +2296,138 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $mol_pop_over extends $mol_pop {
-        showed(): boolean;
-        attr(): Record<string, any>;
-        event(): Record<string, any>;
-        hovered(next?: any): boolean;
-        event_show(event?: any): any;
-        event_hide(event?: any): any;
-    }
-}
-
-declare namespace $.$$ {
-    class $mol_pop_over extends $.$mol_pop_over {
-        event_show(event?: MouseEvent): void;
-        event_hide(event?: MouseEvent): void;
-        showed(): boolean;
+    class $ss_editor_noedit extends $mol_view {
+        field(): Record<string, any>;
     }
 }
 
 declare namespace $ {
+    class $mol_span extends $mol_object2 {
+        readonly uri: string;
+        readonly source: string;
+        readonly row: number;
+        readonly col: number;
+        readonly length: number;
+        constructor(uri: string, source: string, row: number, col: number, length: number);
+        static unknown: $mol_span;
+        static begin(uri: string, source?: string): $mol_span;
+        static end(uri: string, source: string): $mol_span;
+        static entire(uri: string, source: string): $mol_span;
+        toString(): string;
+        toJSON(): {
+            uri: string;
+            row: number;
+            col: number;
+            length: number;
+        };
+        error(message: string, Class?: ErrorConstructor): Error;
+        span(row: number, col: number, length: number): $mol_span;
+        after(length?: number): $mol_span;
+        slice(begin: number, end?: number): $mol_span;
+    }
+}
+
+declare namespace $ {
+    class $mol_error_syntax extends SyntaxError {
+        reason: string;
+        line: string;
+        span: $mol_span;
+        constructor(reason: string, line: string, span: $mol_span);
+    }
+}
+
+declare namespace $ {
+    function $mol_tree2_from_string(this: $, str: string, uri?: string): $mol_tree2;
+}
+
+declare namespace $ {
+    function $mol_tree2_to_string(this: $, tree: $mol_tree2): string;
+}
+
+declare namespace $ {
+    type $mol_tree2_path = Array<string | number | null>;
+    type $mol_tree2_hack<Context> = (input: $mol_tree2, belt: $mol_tree2_belt<Context>, context: Context) => readonly $mol_tree2[];
+    type $mol_tree2_belt<Context> = Record<string, $mol_tree2_hack<Context>>;
+    class $mol_tree2 extends Object {
+        readonly type: string;
+        readonly value: string;
+        readonly kids: readonly $mol_tree2[];
+        readonly span: $mol_span;
+        constructor(type: string, value: string, kids: readonly $mol_tree2[], span: $mol_span);
+        static list(kids: readonly $mol_tree2[], span?: $mol_span): $mol_tree2;
+        list(kids: readonly $mol_tree2[]): $mol_tree2;
+        static data(value: string, kids?: readonly $mol_tree2[], span?: $mol_span): $mol_tree2;
+        data(value: string, kids?: readonly $mol_tree2[]): $mol_tree2;
+        static struct(type: string, kids?: readonly $mol_tree2[], span?: $mol_span): $mol_tree2;
+        struct(type: string, kids?: readonly $mol_tree2[]): $mol_tree2;
+        clone(kids: readonly $mol_tree2[], span?: $mol_span): $mol_tree2;
+        text(): string;
+        static fromString(str: string, uri?: string): $mol_tree2;
+        toString(): string;
+        insert(value: $mol_tree2 | null, ...path: $mol_tree2_path): $mol_tree2;
+        select(...path: $mol_tree2_path): $mol_tree2;
+        filter(path: string[], value?: string): $mol_tree2;
+        hack<Context extends {
+            span?: $mol_span;
+            [key: string]: unknown;
+        } = {}>(belt: $mol_tree2_belt<Context>, context?: Context): $mol_tree2[];
+        error(message: string, Class?: ErrorConstructor): Error;
+    }
+    class $mol_tree2_empty extends $mol_tree2 {
+        constructor();
+    }
+}
+
+declare namespace $ {
+    class $ss_editor_node_data extends $mol_object2 {
+        id(): string;
+        value(next?: any): string;
+        type(next?: any): string;
+        child_ids(next?: any): readonly string[];
+        child_nodes(next?: any): readonly $ss_editor_node_data[];
+        tree(next?: any): $mol_tree2_empty;
+        multiple(next?: any): boolean;
+        changeable(next?: any): boolean;
+        binded(next?: any): boolean;
+        data_tree(id: any, next?: any): $mol_tree2_empty;
+        data_value(id: any, next?: any): string;
+        data_type(id: any, next?: any): string;
+        data_child_ids(id: any, next?: any): readonly string[];
+        data_child_nodes(id: any, next?: any): readonly $ss_editor_node_data[];
+        data_changeable(id: any, next?: any): boolean;
+        data_multiple(id: any, next?: any): boolean;
+    }
+}
+
+declare namespace $.$$ {
+    type $ss_editor_node_data_id = string;
+    class $ss_editor_node_data extends $.$ss_editor_node_data {
+        binded(next?: any): boolean;
+    }
+}
+
+declare namespace $ {
+    class $ss_editor_node_ui_default extends $mol_view {
+        id(): string;
+        data_node(): $$.$ss_editor_node_data;
+        sub(): readonly any[];
+        attr(): Record<string, any>;
+        Block(): $$.$ss_blocks_block;
+        Self_body(): $mol_view;
+        children(): readonly $ss_editor_node_ui[];
+        Children(): $$.$mol_list;
+        block_focused(): boolean;
+    }
+}
+
+declare namespace $.$$ {
+    class $ss_editor_node_ui_default extends $.$ss_editor_node_ui_default {
+        block_focused(): boolean;
+        auto(): void;
+    }
+}
+
+declare namespace $.$$ {
 }
 
 declare namespace $ {
@@ -2264,7 +2613,7 @@ declare namespace $.$$ {
         tail_ui_node_nullable(): $.$ss_editor_node_ui | null;
         tail_ui_node(): $.$ss_editor_node_ui | $ss_editor_node_ui;
         self_sub(): $mol_view[];
-        sub(): ($mol_list | $mol_pop_over)[];
+        sub(): ($mol_pop_over | $mol_list)[];
         bubble_content(): any[];
         new_item_positions(): $mol_button_minor[];
         pos_title(i: number): string;
@@ -2463,7 +2812,7 @@ declare namespace $.$$ {
     class $ss_editor_node_ui_prop_sub extends $.$ss_editor_node_ui_prop_sub {
         bind(next?: boolean): boolean;
         bind_value(next?: string): string;
-        bubble_content(): ($mol_button_minor | $mol_pop_over)[];
+        bubble_content(): ($mol_pop_over | $mol_button_minor)[];
         valid(): boolean;
         autocomplete_showed(): boolean;
         select_value(next?: any): string;
@@ -2487,7 +2836,7 @@ declare namespace $ {
 
 declare namespace $.$$ {
     class $ss_editor_node_ui_prop_root extends $.$ss_editor_node_ui_prop_root {
-        bubble_content(): ($mol_button_minor | $mol_pop_over)[];
+        bubble_content(): ($mol_pop_over | $mol_button_minor)[];
     }
 }
 
@@ -2652,40 +3001,6 @@ declare namespace $.$$ {
 }
 
 declare namespace $.$$ {
-}
-
-declare namespace $ {
-    class $ss_blocks extends $mol_object2 {
-        Block(id: any): $$.$ss_blocks_block;
-        beforeinput(next?: any): any;
-        keydown(next?: any): any;
-        input(next?: any): any;
-        dragenter(next?: any): any;
-        drop(next?: any): any;
-        drag(next?: any): any;
-        dragleave(next?: any): any;
-        paste(next?: any): any;
-        cut(next?: any): any;
-    }
-}
-
-declare namespace $.$$ {
-    class $ss_blocks extends $.$ss_blocks {
-        constructor();
-        block_dom_name(): string;
-        Block(id: $ss_blocks_block_id): $ss_blocks_block;
-        block_from_node(node: Element): $ss_blocks_block;
-        block_from_sel(): $ss_blocks_block | undefined;
-        input(e?: any): void;
-        beforeinput(e?: any): void;
-        keydown(e?: any): void;
-        dragenter(e: any): void;
-        drop(e: any): void;
-        drag(e: any): void;
-        dragleave(e: any): void;
-        paste(e: any): void;
-        cut(e: any): void;
-    }
 }
 
 declare namespace $ {
@@ -3040,6 +3355,280 @@ declare namespace $.$$ {
         props_of(base: string): $mol_tree2[];
     }
     export {};
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+    class $ss_linkpad_link_undef extends $ss_linkpad_link_default {
+        icon(): string;
+        insert_view(): readonly any[];
+        name_focused(next?: any): boolean;
+        Label(): $$.$mol_pop_over;
+        Link_id(): $ss_blocks_noedit;
+        autocomplete(): boolean;
+        Bubble_pane(): $$.$mol_scroll;
+        options_filtered(): readonly string[];
+        Autocomplete(): $$.$mol_select;
+        insert(next?: any): any;
+        Insert(): $mol_button_minor;
+        Insert_button(): $ss_blocks_noedit;
+        Insert_label(): $ss_blocks_noedit;
+        Insert_row(): $ss_blocks_noedit;
+        test(): string;
+        Anchor(): $mol_view;
+        Autocomplete_bubble_content(): $ss_editor_noedit;
+        event_select(id: any, next?: any): any;
+        select_dict(): Record<string, any>;
+        filter_pattern(): string;
+    }
+}
+
+declare namespace $.$$ {
+    class $ss_linkpad_link_undef extends $.$ss_linkpad_link_undef {
+        color(): string;
+        semitransporent(): string;
+        insert_view(): readonly any[];
+        type_and_name(): readonly any[];
+        Name_block(): $ss_blocks_block;
+        insert(): void;
+        filter_pattern(): string;
+        valid(): boolean;
+        autocomplete_showed(): boolean;
+        select_value(next?: any): string;
+        select_links(): {
+            id: string;
+            key: string;
+        }[];
+        select_dict(): Record<string, string>;
+        event_select(selected: string): void;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+    class $ss_linkpad_link_page extends $ss_linkpad_link_default {
+        value_and_id(): readonly any[];
+        sub(): readonly any[];
+        Page(): $mol_page;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $ss_linkpad_link extends $mol_ghost {
+        Sub(): $mol_view;
+        ui_type(): string;
+        Link_data(id: any): any;
+        variants(): Record<string, any>;
+        Root(): $mol_view;
+        add_new_link(id: any): any;
+        replace(id: any): any;
+        replace_to_link(id: any): any;
+        hide_contain(next?: any): boolean;
+        ui_id(): string;
+        all_link_ids(next?: any): readonly string[];
+        data(): any;
+        Block(id: any): any;
+        to_link(next?: any): any;
+        links(): readonly $ss_linkpad_link[];
+        Default_name_block(): $$.$ss_blocks_block;
+        Default(): $$.$ss_linkpad_link_default;
+        Type_name_block(): $$.$ss_blocks_block;
+        Type_link(): $$.$ss_linkpad_link_type;
+        Undef_name_block(): $$.$ss_blocks_block;
+        Undef(): $$.$ss_linkpad_link_undef;
+        Page_name_block(): $$.$ss_blocks_block;
+        Page(): $ss_linkpad_link_page;
+    }
+}
+
+declare namespace $.$$ {
+    type $ss_linkpad_link_id = string;
+    type $ss_linkpad_link_ui_id = [$ss_linkpad_link_ui_id | null, $ss_linkpad_link_id];
+    type $ss_linkpad_link_block_id = [$ss_linkpad_link_ui_id, 'type' | 'value' | 'name' | string];
+    function $ss_linkpad_link_ui_id_build(link_id: $ss_linkpad_link_id, parent_ui_id?: $ss_linkpad_link_ui_id | null): $ss_linkpad_link_ui_id;
+    function $ss_linkpad_link_id_from_ui(ui_id: $ss_linkpad_link_ui_id): $ss_linkpad_link_id;
+    function $ss_linkpad_link_id_parent_from_ui(ui_id: $ss_linkpad_link_ui_id): $ss_linkpad_link_id | undefined;
+    class $ss_linkpad_link extends $.$ss_linkpad_link {
+        type_data(): $ss_linkpad_link_data;
+        ui_type(): string;
+        Sub(): any;
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_pencil extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_cursor_move extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $ss_linkpad extends $mol_book2 {
+        color_gen(): $$.$ss_linkpad_color_generator;
+        raw_gql_path(next?: any): string;
+        right_link_id(next?: any): string;
+        pages(): readonly any[];
+        Bubble(): $mol_view;
+        all_link_ids(next?: any): readonly string[];
+        Link_data(id: any): any;
+        Link(id: any): $$.$ss_linkpad_link;
+        link_links_id(id: any, next?: any): readonly string[];
+        Root_user_link(next?: any): any;
+        Block(id: any): $$.$ss_blocks_block;
+        Blocks(): $$.$ss_blocks;
+        Contenteditable_user(): $ss_blocks_contenteditable;
+        Root_package_link(next?: any): any;
+        Contenteditable_package(): $ss_blocks_contenteditable;
+        Trash_icon(): $mol_icon_trash_can_outline;
+        Trash(): $mol_button_minor;
+        Edit_icon(): $mol_icon_pencil;
+        Edit(): $mol_button_minor;
+        Move_icon(): $mol_icon_cursor_move;
+        Move(): $mol_button_minor;
+        Tools_list(): $$.$mol_list;
+        Tools(): $mol_pop_bubble;
+        add_new_link(id: any): any;
+        replace(id: any): any;
+        replace_to_link(id: any): any;
+        hide_contain(next?: any): boolean;
+        ui_id(id: any): string;
+        link_data_by_ui_id(id: any): any;
+        to_link(id: any, next?: any): any;
+        link_links(id: any): readonly $ss_linkpad_link[];
+    }
+}
+
+declare namespace $ {
+    type DeepClient = any;
+    export class $ss_linkpad_lib_deep {
+        static deepBundle(): {
+            makeDeepClient: (path: string, ssl: boolean) => Promise<DeepClient>;
+            minilinks: any;
+        };
+        static gql_path(next?: string): string;
+        static deep(): any;
+        static minilinks(): any;
+    }
+    export {};
+}
+
+declare namespace $ {
+    function $mol_compare_text<Item>(item?: (item: Item) => string): (a: Item, b: Item) => number;
+}
+
+declare namespace $.$$ {
+    type Link_id = string;
+    type Link = any;
+    export class $ss_linkpad extends $.$ss_linkpad {
+        typeLinks: Set<Link>;
+        ui_id(id: string): string;
+        guid(): Link_id;
+        undef_guid(): string;
+        Type_link_id(): string;
+        Type_link(): $ss_linkpad_link_data;
+        Contain_link(): $ss_linkpad_link_ui_id;
+        Package_link(): $ss_linkpad_link_ui_id;
+        Admin_link(): $ss_linkpad_link_ui_id;
+        add_DEV(type_id: $ss_linkpad_link_id, name_or_val: string, parent_ui_id: $ss_linkpad_link_ui_id | null, node?: boolean): $ss_linkpad_link_ui_id;
+        add_undef(name_or_val: string, parent_ui_id: $ss_linkpad_link_ui_id | null, node?: boolean): $ss_linkpad_link_ui_id;
+        add_link(args: {
+            from: $ss_linkpad_link_ui_id;
+            link: $ss_linkpad_link_ui_id;
+            pos?: number;
+        }): void;
+        add_new_link(args: {
+            from: $ss_linkpad_link_ui_id;
+            val?: string;
+            pos?: number;
+        }): $ss_linkpad_link;
+        replace(args: {
+            ui_id: $ss_linkpad_link_ui_id;
+            new_id?: string;
+            new_to?: string;
+            new_type_id?: string;
+        }): string | $ss_linkpad_link_ui_id | undefined;
+        replace_to_link(args: {
+            link: $ss_linkpad_link_ui_id;
+            new_to: string;
+        }): void;
+        gql_path(): string;
+        deep(): any;
+        minilinks(data?: any[]): any;
+        sync_deep(): any;
+        ml(): any;
+        default_data(): any[];
+        deep_data(): any;
+        nameL: (L: Link) => any;
+        addL: (L: Link, parent_ui_id: $ss_linkpad_link_ui_id | null, node?: boolean) => $ss_linkpad_link_ui_id;
+        sort_linksL: (A: Link, B: Link) => number;
+        add_outL: (L: Link, from_ui_id: $ss_linkpad_link_ui_id, depth?: number, visited?: Set<string>) => void;
+        right_link_id(next?: any): string;
+        Admin_page(): $ss_linkpad_link;
+        Package_page(id: $ss_linkpad_link_id): $ss_linkpad_link | null;
+        Root_user_link(): $ss_linkpad_link;
+        Root_package_link(): $ss_linkpad_link | null;
+        pages(): readonly any[];
+        auto(): void;
+        all_link_ids(next?: any): readonly string[];
+        upd_link_ids(id: string): void;
+        Link_data(link_id: string, next?: $ss_linkpad_link_data): $ss_linkpad_link_data | null;
+        link_data_by_ui_id(ui_id: $ss_linkpad_link_ui_id): $ss_linkpad_link_data | null;
+        type_data_by_ui_id(ui_id: $ss_linkpad_link_ui_id): $ss_linkpad_link_data | null;
+        link_links(ui_id: $ss_linkpad_link_ui_id): $ss_linkpad_link[];
+    }
+    export {};
+}
+
+declare namespace $ {
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+    class $ss_links extends $mol_book2 {
+        title(): string;
+        Placeholder(): any;
+        submit_button(): readonly any[];
+        editor_pages(id: any): readonly any[];
+        Editor(id: any): $$.$ss_linkpad;
+        Hide_contain(): $mol_check_box;
+        opened_editor_pages(): readonly any[];
+        pages(): readonly any[];
+        submit(next?: any): any;
+        Submit(): $mol_button_minor;
+        demo(next?: any): any;
+        Demo(): $mol_button_minor;
+        opened_path(next?: any): string;
+        hide_contain(next?: any): boolean;
+        raw_gql_path(next?: any): string;
+        Gql_path(): $$.$mol_string;
+        Gql_path_field(): $$.$mol_form_field;
+        Menu(): $mol_page;
+    }
+}
+
+declare namespace $.$$ {
+    class $ss_links extends $.$ss_links {
+        opened_editor_pages(): readonly any[];
+        raw_gql_path(next?: any): string;
+        opened_path(): string;
+    }
 }
 
 declare namespace $.$$ {
