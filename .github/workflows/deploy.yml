@@ -1,5 +1,4 @@
-@@ -1,11 +1,6 @@
-name: $ss_linkpad_app
+name: $ss_editor
 
 on:
   workflow_dispatch:
@@ -7,17 +6,20 @@ on:
   pull_request:
   schedule:
   - cron: "0 7 * * *"
-on: [workflow_dispatch, push, pull_request]
 
 jobs:
   build:
-@ -19,7 +14,7 @@ jobs:
-        package: 'ss/linkpad'
-        modules: 'app'
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: hyoo-ru/mam_build@master2
+      with:
+        package: 'ss'
+        modules: 'editor'
 
     - uses: JamesIves/github-pages-deploy-action@4.1.7
-    - uses: hyoo-ru/gh-deploy@v4.4.1
-      if: github.ref == 'refs/heads/master'
       with:
         branch: gh-pages
-        folder: 'ss/linkpad/app/-'
+        folder: 'ss/editor/-'
