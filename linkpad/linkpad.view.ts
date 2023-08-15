@@ -229,7 +229,7 @@ namespace $.$$ {
 		
 		nameL = ( L: Link )=> {
 			const containL = L.inByType[3]
-			return containL?.find( L => L.value )?.value.value || ''
+			return containL?.find( ( L: Link ) => L.value )?.value.value || ''
 		}
 		addL = (L: Link, parent_ui_id: $ss_linkpad_link_ui_id | null, node?: boolean ) => {
 			const id = L.id.toString()
@@ -276,7 +276,7 @@ namespace $.$$ {
 			visited.add( L.id+'' )
 
 			const out = L.out
-			out.forEach( L=> {
+			out.forEach( ( L: Link )=> {
 				const ui_id = this.addL( L, from_ui_id, false )
 				this.addL( L.to, ui_id, true )
 				if ( ['Join','Focus','User'].includes( this.nameL(L.type) ) ) return
@@ -305,7 +305,7 @@ namespace $.$$ {
 
 
 			const Admin = this.addL( AdminL, null )
-			AdminL.out.sort( this.sort_linksL ).forEach( L=> {
+			AdminL.out.sort( this.sort_linksL ).forEach( ( L: Link )=> {
 				const ui_id = this.addL( L, Admin, false )
 				this.addL( L.to, ui_id, true )
 			} )
@@ -327,7 +327,7 @@ namespace $.$$ {
 			// const filter = (L: Link) => !['Join','Focus','User'].includes( this.nameL(L.type) )
 			DeepcaseL.out
 				// .filter( filter )
-				.sort( this.sort_linksL ).forEach( L=> {
+				.sort( this.sort_linksL ).forEach( ( L: Link )=> {
 					const ui_id = this.addL( L, Deepcase, false )
 					const to_ui_id = this.addL( L.to, ui_id, true )
 					// if ( this.Link_data( L.id+'' ) ) return
