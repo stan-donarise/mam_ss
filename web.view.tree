@@ -1,0 +1,1005 @@
+$mol_scroll $mol_view
+	scroll_top? 0
+	scroll_left? 0
+	field *
+		^
+		tabIndex <= tabindex -1
+	event *
+		^
+		scroll?event <=> event_scroll?event null
+
+$ss_editor_node_data $mol_object2
+	id \
+	value? \
+	type? \
+	child_ids? /string
+	child_nodes? /$ss_editor_node_data
+	tree? $mol_tree2_empty
+	multiple? false
+	changeable? false
+	binded? false
+	data_tree*? $mol_tree2_empty
+	data_value*? \
+	data_type*? \
+	data_child_ids*? /string
+	data_child_nodes*? /$ss_editor_node_data
+	data_changeable*? false
+	data_multiple*? false
+
+$mol_ghost $mol_view
+	Sub $mol_view
+
+$ss_blocks_noedit $mol_view
+	field *
+		^
+		contentEditable false
+
+$ss_blocks_block $mol_view
+	- minimal_height 25
+	Placeholder $ss_blocks_noedit
+		sub / \test
+	sub /
+		<= default_value \default_block_value
+	value_setted? \default_block_value_changed
+	value_changed? \default_block_value_changed
+	attr *
+		^
+		focus-state <= focus_state? \blurred
+		empty <= empty? false
+	style *
+		^
+		--before <= before_content \
+		--after <= after_content \
+		- color <= color \var(--mol_theme_text)
+		opacity <= opacity 1
+	visible_placeholder \
+	placeholder \
+	on_ctrl_x?event null
+	keydown_enter?event null
+	before_any_input?event null
+	before_insert_text?event null
+	-
+	beforeinput? null
+	keydown? null
+	input? null
+	dragenter? null
+	drop? null
+	drag? null
+	dragleave? null
+	paste? null
+	cut? null
+	-
+	event *
+		^
+		mouseout? <=> mouseout? null
+		mouseover? <=> mouseover? null
+	-
+	focused? false
+	hovered? false
+	focused_or_hovered false
+	on_focused_or_hovered* null
+	focus null
+
+$mol_list $mol_view
+	render_visible_only true
+	render_over 0
+	sub <= rows /$mol_view
+	Empty $mol_view
+	Gap_before $mol_view style * paddingTop <= gap_before 0
+	Gap_after $mol_view style * paddingTop <= gap_after 0
+	view_window /
+		0
+		0
+
+$ss_editor_node_ui_default $mol_view
+	id \
+	data_node $ss_editor_node_data
+	sub /
+		<= Self_body $mol_view 
+			sub / <= Block $ss_blocks_block
+			minimal_width 32
+		<= Children $mol_list
+			rows? <= children /$ss_editor_node_ui
+	attr *
+		^
+		focused <= block_focused false
+
+$ss_editor_noedit $mol_view
+	field *
+		^
+		contentEditable false
+
+$mol_pop $mol_view
+	showed? false
+	align_vert \
+	align_hor \
+	prefer \vert
+	sub /
+		<= Anchor null
+	sub_visible /
+		<= Anchor
+		<= Bubble $mol_pop_bubble
+			align <= align \bottom_center
+			content <= bubble_content /$mol_view_content
+			height_max <= height_max 9999
+
+$mol_pop_bubble $mol_view
+	sub <= content /$mol_view_content
+	style *
+		^
+		maxHeight <= height_max 9999
+	attr *
+		^
+		mol_pop_align <= align \
+		tabindex 0
+
+$mol_speck $mol_view
+	attr *
+		^
+		mol_theme <= theme \$mol_theme_accent
+	style *
+		^
+		minHeight \1em
+	sub /
+		<= value null
+
+$mol_button $mol_view
+	enabled true
+	click?event null
+	event_click?event null
+	event *
+		^
+		click?event <=> event_activate?event null
+		dblclick?event <=> clicks?event null
+		keydown?event <=> event_key_press?event null 
+	attr *
+		^
+		disabled <= disabled false
+		role \button
+		tabindex <= tab_index 0
+		title <= hint_safe <= hint \
+	sub /$mol_view_content
+		<= title
+	Speck $mol_speck
+		value <= error \
+
+$mol_button_typed $mol_button
+	minimal_height 40
+	minimal_width 40
+
+$mol_button_minor $mol_button_typed
+
+$mol_check $mol_button_minor
+	attr *
+		^
+		mol_check_checked <= checked? false
+		aria-checked <= aria_checked \false
+		role <= aria_role \checkbox
+	sub /$mol_view_content
+		<= Icon null
+		<= label /
+			<= Title $mol_view
+				sub /
+					<= title \
+
+$mol_pick $mol_pop
+	event *
+		^
+		keydown?event <=> keydown?event null
+	Anchor <= Trigger $mol_check
+		minimal_width 40
+		minimal_height 40
+		enabled <= trigger_enabled true
+		checked? <=> showed?
+		sub <= trigger_content /$mol_view_content
+			<= title
+		hint <= hint \
+
+$mol_hotkey $mol_plugin
+	event *
+		^
+		keydown?event <=> keydown?event null
+	key *
+	mod_ctrl false
+	mod_alt false
+	mod_shift false
+
+$mol_string $mol_view
+	dom_name \input
+	enabled true
+	minimal_height 40
+	autocomplete false
+	selection? /number
+		0
+		0
+	auto /
+		<= selection_watcher null
+	field *
+		^
+		disabled <= disabled false
+		value <= value_changed? <=> value? \
+		placeholder <= hint_visible <= hint \
+		spellcheck <= spellcheck true
+		autocomplete <= autocomplete_native \
+		selectionEnd <= selection_end 0
+		selectionStart <= selection_start 0
+		inputMode <= keyboard \text
+		enterkeyhint <= enter \go
+	attr *
+		^
+		maxlength <= length_max +Infinity
+		type <= type? \text
+	event *
+		^
+		input?event <=> event_change?event null
+	plugins /
+		<= Submit $mol_hotkey
+			mod_ctrl <= submit_with_ctrl false
+			key * enter?event <=> submit?event null
+
+$mol_svg $mol_view
+	dom_name \svg
+	dom_name_space \http://www.w3.org/2000/svg
+	font_size 16
+	font_family \
+	style_size *
+
+$mol_svg_root $mol_svg
+	dom_name \svg
+	attr *
+		^
+		viewBox <= view_box \0 0 100 100
+		preserveAspectRatio <= aspect \xMidYMid
+
+$mol_svg_path $mol_svg
+	dom_name \path
+	attr *
+		^
+		d <= geometry \
+
+
+$mol_icon $mol_svg_root
+	view_box \0 0 24 24
+	minimal_width 16
+	minimal_height 16
+	sub /
+		<= Path $mol_svg_path
+			geometry <= path \
+
+$mol_icon_dots_vertical $mol_icon path \M12,16C13.1,16 14,16.9 14,18C14,19.1 13.1,20 12,20C10.9,20 10,19.1 10,18C10,16.9 10.9,16 12,16M12,10C13.1,10 14,10.9 14,12C14,13.1 13.1,14 12,14C10.9,14 10,13.1 10,12C10,10.9 10.9,10 12,10M12,4C13.1,4 14,4.9 14,6C14,7.1 13.1,8 12,8C10.9,8 10,7.1 10,6C10,4.9 10.9,4 12,4Z
+
+$mol_paragraph $mol_view
+	line_height 24
+	letter_width 7
+	width_limit +Infinity
+	row_width 0
+	sub / <= title
+
+$mol_dimmer $mol_paragraph
+	haystack \
+	needle \
+	sub <= parts /$mol_view_content
+	Low* $mol_paragraph
+		sub /
+			<= string* \
+	High* $mol_paragraph
+		sub /
+			<= string* \
+
+$mol_nav $mol_plugin
+	cycle? false
+	-
+	mod_ctrl false
+	mod_shift false
+	mod_alt false
+	-
+	keys_x? /
+	keys_y? /
+	-
+	current_x? null
+	current_y? null
+	-
+	event_up?event null
+	event_down?event null
+	event_left?event null
+	event_right?event null
+	event *
+		^
+		keydown?event <=> event_key?event null
+
+$mol_select $mol_pick
+	dictionary? *
+	options /string
+	value? \
+	option_label_default \
+	Option_row* $mol_button_minor
+		event_click?event <=> event_select*?event null
+		sub <= option_content* /
+			<= Option_label* $mol_dimmer
+				haystack <= option_label* \
+				needle <= filter_pattern? \
+	No_options $mol_view
+		sub /
+			<= no_options_message @ \No options
+	plugins /
+		^
+		<= Nav $mol_nav
+			keys_y <= nav_components /$mol_view
+			current_y?component <=> option_focused?component null
+			cycle? <=> nav_cycle? true
+	hint @ \Pick..
+	bubble_content /
+		<= Filter
+		<= Bubble_pane $mol_scroll sub /
+			<= Menu $mol_list
+				rows <= menu_content /$mol_view
+	Filter $mol_string
+		value? <=> filter_pattern? \
+		hint @ \Filter..
+		submit?event <=> submit?event null
+		enabled <= enabled true
+	Trigger_icon $mol_icon_dots_vertical
+
+$mol_pop_over $mol_pop
+	showed <= hovered? false
+	attr *
+		^
+		tabindex 0
+	event *
+		^
+		mouseenter?event <=> event_show?event null
+		mouseleave?event <=> event_hide?event null
+
+$ss_editor_node_ui_pop $ss_editor_node_ui_default
+	sub /
+		<= Self_body $mol_pop_over
+			showed? <=> showed? false
+			align <= test \bottom_right
+			hovered => self_hovered
+			Anchor <= Anchor $mol_view
+				sub / 
+					<= Block
+			bubble_content <= visible_bubble_content / 
+				<= Bubble_content $ss_editor_noedit
+					sub <= bubble_content /
+		<= Children $mol_list
+			rows? <= children
+	Autocomplete_bubble_content $ss_editor_noedit
+		sub / 
+			<= Bubble_scroll $mol_scroll
+				sub <= bubble_content_autocomplete /
+					<= Bubble_pane
+			<= Autocomplete_footer $mol_view
+				sub <= autocomplete_footer /
+	autocomplete false
+	data_node $ss_editor_node_data
+	Autocomplete $mol_select
+		no_options_message \Not found
+		event_select*? <=> event_select*? null
+		Bubble_pane => Bubble_pane
+		dictionary <= select_dict *
+		filter_pattern <= filter_pattern \
+		options_filtered => options_filtered
+	attr *
+		^
+		hovered <= self_hovered
+
+$mol_icon_key $mol_icon path \M7,14C5.9,14 5,13.1 5,12C5,10.9 5.9,10 7,10C8.1,10 9,10.9 9,12C9,13.1 8.1,14 7,14M12.65,10C11.83,7.67 9.61,6 7,6C3.69,6 1,8.69 1,12C1,15.31 3.69,18 7,18C9.61,18 11.83,16.33 12.65,14H17V18H21V14H23V10H12.65Z
+
+$mol_icon_key_variant $mol_icon path \M22,18V22H18V19H15V16H12L9.74,13.74C9.19,13.91 8.61,14 8,14C4.69,14 2,11.31 2,8C2,4.69 4.69,2 8,2C11.31,2 14,4.69 14,8C14,8.61 13.91,9.19 13.74,9.74L22,18M7,5C5.9,5 5,5.9 5,7C5,8.1 5.9,9 7,9C8.1,9 9,8.1 9,7C9,5.9 8.1,5 7,5Z
+
+$mol_icon_cached $mol_icon path \M19,8L15,12H18C18,15.31 15.31,18 12,18C11,18 10.03,17.75 9.2,17.3L7.74,18.76C8.97,19.54 10.43,20 12,20C16.42,20 20,16.42 20,12H23M6,12C6,8.69 8.69,6 12,6C13,6 13.97,6.25 14.8,6.7L16.26,5.24C15.03,4.46 13.57,4 12,4C7.58,4 4,7.58 4,12H1L5,16L9,12
+
+$mol_icon_tick $mol_icon path \M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z
+
+$mol_check_box $mol_check
+	Icon $mol_icon_tick
+
+$mol_icon_trash_can $mol_icon path \M9,3V4H4V6H5V19C5,20.1 5.9,21 7,21H17C18.1,21 19,20.1 19,19V6H20V4H15V3H9M9,8H11V17H9V8M13,8H15V17H13V8Z
+
+$mol_icon_trash_can_outline $mol_icon path \M9,3V4H4V6H5V19C5,20.1 5.9,21 7,21H17C18.1,21 19,20.1 19,19V6H20V4H15V3H9M7,6H17V19H7V6M9,8V17H11V8H9M13,8V17H15V8H13Z
+
+$mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
+
+$mol_icon_plus_box $mol_icon path \M17,13H13V17H11V13H7V11H11V7H13V11H17M19,3H5C3.89,3 3,3.89 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19V5C21,3.89 20.1,3 19,3Z
+
+$mol_labeler $mol_list
+	rows /
+		<= Label $mol_view
+			minimal_height 32
+			sub <= label /$mol_view_content
+				<= title
+		<= Content $mol_view
+			minimal_height 24
+			sub <= content /
+
+$ss_editor_node_ui_prop $ss_editor_node_ui_pop
+	data_node $ss_editor_node_data
+		type => type
+		changeable? <=> changeable?
+		multiple? <=> multiple?
+		binded? => binded?
+	drop_node* null
+	unbind_prop* null
+	autocomplete true
+	replace*? null
+	add_object_in_list*? null
+	position \binded
+	id \
+	sub /
+		<= Self_body
+		<= Children
+	Anchor $mol_view
+		sub <= self_sub / 
+			<= Self_block $mol_view
+				sub / <= Block
+			<= Icons $ss_editor_noedit sub <= icons /
+				<= Icon_multiple $mol_icon_key_variant
+				<= Icon_changeable $mol_icon_cached
+	tail_ui_node_type null
+	tail_ui_node_nullable null
+	tail_ui_node $ss_editor_node_ui
+		List_body => List_body
+		List_children => List_children
+		Dict_body => Dict_body
+		Dict_children => Dict_children
+	bubble_content /
+		- <= Add_list_item
+		- <= Bind_popover
+		<= Changeable $mol_check_box
+			title \Changeable
+			checked? <=> changeable? false
+		<= Multiple $mol_check_box
+			title \Multiple
+			checked? <=> multiple? false
+		<= Drop $mol_button_minor
+			click? <=> drop? null
+			sub /
+				<= Drop_icon $mol_icon_trash_can_outline
+				\Drop
+	Add_list_item_popover $mol_pop_over
+		Anchor <= Add_list_item $mol_button_minor
+			click? <=> add_first? null
+			sub /
+				<= Add_list_item_icon $mol_icon_plus_box
+				\Add item
+		align \right_top
+		bubble_content /
+			<= Position_label $mol_labeler
+				title \In position:
+				content <= new_item_positions /
+					<= New_item_pos*1 $mol_button_minor
+						title <= pos_title* \
+						click? <=> add_in_pos*? null
+	attr *
+		^
+		tail <= tail_ui_node_type
+
+$mol_check_list $mol_view
+	Option* $mol_check
+		checked? <=> option_checked*? false
+		label <= option_label* /
+			<= option_title* \
+		enabled <= option_enabled* <= enabled true
+		hint <= option_hint* \
+		minimal_height 24
+	options *
+	keys /string
+	sub <= items /$mol_check
+
+$mol_switch $mol_check_list
+	value? \
+
+$ss_editor_node_ui_prop_sub $ss_editor_node_ui_prop
+	data_node_parent $ss_editor_node_data
+	props_of* /$mol_tree2
+	set_subprop_tree*? null
+	position \sub
+	bubble_content /
+		<= Bind_popover
+		<= Changeable
+		<= Drop
+	autocomplete_footer /
+		<= Drop
+	attr *
+		^
+		valid <= valid true
+	Bind_popover $mol_pop_over
+		Anchor <= Bind $mol_check_box
+			title \Bind
+			checked? <=> bind? false
+		align \right_center
+		bubble_content /
+			<= Switch_bind $mol_switch
+				value? <=> bind_value? \
+				options *
+					left \⟵
+					bi \⟷
+					right \⟶
+
+$ss_editor_node_ui_prop_root $ss_editor_node_ui_prop_sub
+	position \root
+
+$mol_icon_find_replace $mol_icon path \M11,6C12.38,6 13.63,6.56 14.54,7.46L12,10H18V4L15.95,6.05C14.68,4.78 12.93,4 11,4C7.47,4 4.57,6.61 4.08,10H6.1C6.56,7.72 8.58,6 11,6M16.64,15.14C17.3,14.24 17.76,13.17 17.92,12H15.9C15.44,14.28 13.42,16 11,16C9.62,16 8.37,15.44 7.46,14.54L10,12H4V18L6.05,15.95C7.32,17.22 9.07,18 11,18C12.55,18 14,17.5 15.14,16.64L20,21.5L21.5,20L16.64,15.14Z
+
+$ss_editor_node_ui_class $ss_editor_node_ui_pop
+	data_node $ss_editor_node_data
+	tree $mol_tree2_empty
+	sub /
+	autocomplete true
+	class_list /string
+	Anchor $ss_editor_node_ui_class_self
+		Block <= Block $ss_blocks_block
+		valid <= valid true
+	bubble_content /
+		<= Replace_class $mol_button_minor
+			click? <=> clear? null
+			sub /
+				<= Replace_class_icon $mol_icon_find_replace
+				\Replace class
+
+$ss_editor_node_ui_class_self $mol_view
+	sub /
+		<= Dollar $ss_editor_noedit
+			sub / \$
+		<= Label $mol_view 
+			sub / 
+				<= Block $ss_blocks_block
+	attr *
+		^
+		valid <= valid true
+
+$ss_editor_node_ui_class_base $ss_editor_node_ui_class
+	sub /
+		<= Self_body
+		<= Props $mol_view
+			sub? <= root_props /$ss_editor_node_ui_prop_root
+
+$mol_icon_playlist_plus $mol_icon path \M2,16H10V14H2M18,14V10H16V14H12V16H16V20H18V16H22V14M14,6H2V8H14M14,10H2V12H14V10Z
+
+$ss_editor_node_ui_object $ss_editor_node_ui_pop
+	tree $mol_tree2_empty
+	library_tree $mol_tree2_empty
+	Block_fabric* $ss_blocks_block
+	drop_node* null
+	drop_parent_node* null
+	replace*? null
+	add_subprop* null
+	add_sibling_object_above* null
+	autocomplete true
+	props_by_type* /$ss_editor_node_data
+	data_node $ss_editor_node_data
+		multiple? <=> multiple?
+	class_ui_node $ss_editor_node_ui
+		Class_body => Class_body
+		children => class_children
+	sub /
+		<= Self_body
+		<= Props $mol_view
+			sub? <= class_children
+	Anchor $mol_view
+		sub /
+			<= Object_label $mol_view 
+				sub <= object_label /
+					<= Label_block $mol_view
+						sub / <= Block
+					<= Icons $ss_editor_noedit sub <= icons /
+						<= Icon_multiple $mol_icon_key_variant
+			<= Class_label $mol_view 
+				sub / 
+					<= Class_body
+	bubble_content /
+		<= Props_select $mol_button_minor
+			click? <=> add_new_subprop? null
+			sub /
+				<= Props_select_icon $mol_icon_playlist_plus
+				\Override property
+		<= Multiple $mol_check_box
+			title \Multiple
+			checked? <=> multiple? false
+		<= Replace $mol_button_minor
+			title \Replace
+			click? <=> clear? null
+			sub /
+				<= Replace_icon $mol_icon_find_replace
+				\Replace
+		<= Drop $mol_button_minor
+			click? <=> drop? null
+			sub /
+				<= Drop_icon $mol_icon_trash_can_outline
+				\Drop
+	autocomplete_footer /
+		<= Drop
+
+$ss_editor_node_ui_component $ss_editor_node_ui_object
+	add_rootprop? null
+	bubble_content /
+		<= Props_select $mol_button_minor
+			click? <=> add_new_rootprop? null
+			sub /
+				<= Props_select_icon $mol_icon_playlist_plus
+				\Override property
+	Anchor $mol_view
+		sub /
+			<= Component_label $mol_view
+				sub /
+					<= Dollar $ss_editor_noedit
+						sub / \$
+					<= Object_label
+			<= Class_label
+
+$ss_blocks $mol_object2
+	Block* $ss_blocks_block
+	beforeinput? null
+	keydown? null
+	input? null
+	dragenter? null
+	drop? null
+	drag? null
+	dragleave? null
+	paste? null
+	cut? null
+
+$ss_editor_node_ui $mol_ghost
+	id \
+	data_id \
+	data_node $ss_editor_node_data
+		type => type
+	data_node_parent $ss_editor_node_data
+	library_tree $mol_tree2_empty
+	-
+	Block $ss_blocks_block
+	Block_fabric* $ss_blocks_block
+	children /$ss_editor_node_ui
+	-
+	Sub <= Root
+	type_force? \
+	-
+	variants *
+		locale <= Locale $ss_editor_node_ui_locale
+			children <= children
+			data_node <= data_node
+		root <= Root $ss_editor_node_ui_root
+			children <= children
+			data_node <= data_node
+		value <= Value $ss_editor_node_ui_value
+			Block <= Block
+			children <= children
+			data_node <= data_node
+		string <= String $ss_editor_node_ui_string
+			Block <= Block
+			children <= children
+			data_node <= data_node
+		bool <= Bool $ss_editor_node_ui_bool
+			Block <= Block
+			children <= children
+			data_node <= data_node
+		null <= Null $ss_editor_node_ui_null
+			Block <= Block
+			children <= children
+			data_node <= data_node
+		left <= Left $ss_editor_node_ui_left
+			children <= children
+			data_node <= data_node
+		right <= Right $ss_editor_node_ui_right
+			children <= children
+			data_node <= data_node
+		bi <= Bi $ss_editor_node_ui_bi
+			children <= children
+			data_node <= data_node
+		default <= Default $ss_editor_node_ui_default
+			Block <= Block
+			children <= children
+			data_node <= data_node
+		list <= List $ss_editor_node_ui_list
+			Block <= Block
+			data_node <= data_node
+			children <= children
+			Block_fabric* <= Block_fabric*
+			Self_body => List_body
+			Children => List_children
+			id <= id
+		dict <= Dict $ss_editor_node_ui_dict
+			Block <= Block
+			data_node <= data_node
+			children <= children
+			Self_body => Dict_body
+			Children => Dict_children
+		key <= Key $ss_editor_node_ui_key
+			Block <= Block
+			children <= children
+			data_node <= data_node
+		prop <= Prop $ss_editor_node_ui_prop
+			Block <= Block
+			children <= children
+			data_node <= data_node
+			replace*? <= replace_prop*? null
+			add_object_in_list*? <=> add_object_in_list*? null
+			id <= id
+			unbind_prop* <= unbind_prop* null
+		prop_root <= Prop_root $ss_editor_node_ui_prop_root
+			Block <= Block
+			children <= children
+			data_node <= data_node
+			props_of* <= props_of* /$mol_tree2
+			data_node_parent <= data_node_parent
+			drop_node* <= drop_node*
+			set_subprop_tree*? <=> set_subprop_tree*? null
+			add_object_in_list*? <=> add_object_in_list*? null
+			id <= id
+		prop_sub <= Subprop $ss_editor_node_ui_prop_sub
+			Block <= Block
+			children <= children
+			data_node <= data_node
+			props_of* <= props_of* /$mol_tree2
+			data_node_parent <= data_node_parent
+			drop_node* <= drop_node*
+			set_subprop_tree*? <=> set_subprop_tree*? null
+			add_object_in_list*? <=> add_object_in_list*? null
+			id <= id
+		class <= Class $ss_editor_node_ui_class
+			Block <= Block
+			Self_body => Class_body
+			children <= children
+			data_node <= data_node
+			class_list <= class_list /string
+			valid => valid_class
+		class_base <= Class_base $ss_editor_node_ui_class_base
+			Block <= Block
+			Self_body => Class_base_body
+			children <= children
+			data_node <= data_node
+			class_list <= class_list /string
+		component <= Component $ss_editor_node_ui_component
+			Block <= Block
+			children <= children
+			library_tree <= library_tree
+			data_node <= data_node
+			Block_fabric* <= Block_fabric*
+			drop_node* <= drop_node* null
+			drop_parent_node* <= drop_parent_node* null
+			add_sibling_object_above* <= add_sibling_object_above* null
+			add_rootprop* <= add_rootprop* null
+			id <= id
+		object <= Object $ss_editor_node_ui_object
+			Block <= Block
+			children <= children
+			library_tree <= library_tree
+			data_node <= data_node
+			Block_fabric* <= Block_fabric*
+			drop_node* <= drop_node* null
+			drop_parent_node* <= drop_parent_node* null
+			add_sibling_object_above* <= add_sibling_object_above* null
+			replace*? <=> replace_prop*? null
+			props_by_type* <= props_by_type* /$ss_editor_node_data
+			add_subprop* <= add_subprop* null
+			id <= id
+
+$ss_editor_node_ui_root $ss_editor_node_ui_default
+	sub /
+		<= Children
+
+$ss_editor_node_ui_locale $ss_editor_node_ui_default
+	sub /
+		<= Children
+
+$ss_editor_node_ui_dict $ss_editor_node_ui_default
+	sub /
+		<= Self_body $ss_editor_noedit sub / \: dict
+	Children $mol_list
+		rows? <= children /$ss_editor_node_ui
+
+$ss_editor_node_ui_value $ss_editor_node_ui_default
+
+$ss_editor_node_ui_key $ss_editor_node_ui_default
+	sub /
+		<= Self_body $mol_view sub / <= Block $ss_blocks_block
+		<= Delimiter $mol_view sub / \:
+		<= Children $mol_list
+			rows? <= children /$ss_editor_node_ui
+
+$ss_editor_node_ui_null $ss_editor_node_ui_value
+	sub /
+		<= Self_body $mol_view sub / 
+			<= Block $ss_blocks_block
+		<= Noeditable $ss_editor_noedit sub / \: any
+
+$ss_editor_node_ui_bool $ss_editor_node_ui_value
+	sub /
+		<= Self_body $mol_view sub / 
+			<= Block $ss_blocks_block
+		<= Noeditable $ss_editor_noedit sub / \: boolean
+
+$ss_editor_node_ui_string $ss_editor_node_ui_value
+	sub /
+		<= Self_body $mol_view sub / 
+			<= Block $ss_blocks_block
+		<= Noeditable $ss_editor_noedit sub / \: string
+
+$ss_editor_node_ui_left $ss_editor_node_ui_default
+	data_node $ss_editor_node_data
+		value? => value?
+	sub /
+		<= Self_body $ss_editor_noedit sub / \⟵
+		<= Children
+
+$ss_editor_node_ui_left_slot $ss_editor_node_ui_left
+	sub /
+		<= Self_body $ss_editor_noedit sub / \⟵
+		<= Label $mol_view sub / \New component...
+
+$ss_editor_node_ui_right $ss_editor_node_ui_default
+	data_node $ss_editor_node_data
+		value? => value?
+	sub /
+		<= Self_body $ss_editor_noedit sub / \⟶
+		<= Children
+
+$ss_editor_node_ui_bi $ss_editor_node_ui_default
+	data_node $ss_editor_node_data
+		value? => value?
+	sub /
+		<= Self_body $ss_editor_noedit sub / \⟷
+		<= Children
+
+$mol_page $mol_view
+	dom_name \article
+	field *
+		^
+		tabIndex <= tabindex -1
+	sub /
+		<= Head $mol_view
+			minimal_height 64
+			dom_name \header
+			sub <= head /
+				<= Title $mol_view
+					dom_name \h1
+					sub <= title_content /
+						<= Logo null
+						<= title
+				<= Tools $mol_view
+					sub <= tools /$mol_view_content
+		<= Body $mol_scroll
+			scroll_top? => body_scroll_top?
+			sub <= body /$mol_view_content
+		<= Foot $mol_view
+			dom_name \footer
+			sub <= foot /$mol_view
+
+$mol_form_field $mol_labeler
+	bids /string
+	label /
+		<= name \
+		<= Bid $mol_view
+			sub / <= bid \
+	content / <= control null
+
+$mol_row $mol_view
+
+$mol_form $mol_list
+	submit_allowed true
+	submit_blocked false
+	event *
+		^
+		keydown?event <=> keydown?event null
+	submit?event null
+	rows /
+		<= Body $mol_list
+			sub <= body <= form_fields /$mol_form_field
+		<= Foot $mol_row
+			sub <= foot <= buttons /$mol_view
+
+$mol_button_major $mol_button_typed
+	attr *
+		^
+		mol_theme \$mol_theme_accent
+
+$ss_blocks_contenteditable $mol_view
+	Blocks $ss_blocks
+		Block* => Block*
+		beforeinput? => blocks_beforeinput?
+		keydown? => blocks_keydown?
+		input? => blocks_input?
+		dragenter? => blocks_dragenter?
+		drop? => blocks_drop?
+		drag? => blocks_drag?
+		dragleave? => blocks_dragleave?
+		paste? => blocks_paste?
+		cut? => blocks_cut?
+	sub /
+		<= Body $mol_view
+	field *
+		^
+		contentEditable true
+		- contentEditable \plaintext-only
+	event *
+		^
+		beforeinput? <=> blocks_beforeinput?
+		keydown? <=> blocks_keydown?
+		input? <=> blocks_input?
+		dragenter? <=> blocks_dragenter?
+		drop? <=> blocks_drop?
+		drag? <=> blocks_drag?
+		dragleave? <=> blocks_dragleave?
+		paste? <=> blocks_paste?
+		cut? <=> blocks_cut?
+
+$ss_editor_node_ui_list $ss_editor_node_ui_default
+	Block_fabric* $ss_blocks_block
+	sub /
+		<= Self_body $ss_editor_noedit 
+			sub / \: list
+
+$ss_editor $mol_scroll
+	title \$ss_editor
+	sub /
+		<= Contenteditable $ss_blocks_contenteditable
+			Body <= Ui_root_node? null
+			Block* => Block*
+	lib $mol_tree2_empty
+	prop_ids? /string
+	props_by_type* /$ss_editor_node_data
+	prop_norm_tree*? /$mol_tree2
+	Ui_node* $ss_editor_node_ui
+		id <= id* \
+		data_node <= data_node_by_ui_id* $ss_editor_node_data
+		data_node_parent <= data_node_parent_by_ui_id* $ss_editor_node_data
+		children? <= ui_node_children*? /$ss_editor_node_ui
+		library_tree <= library_tree $mol_tree2_empty
+		Block <= Ui_node_block* $ss_blocks_block
+		Block_fabric* <= Block_fabric* $ss_blocks_block
+		drop_node* <= drop_node* null
+		unbind_prop* <= unbind_prop* null
+		drop_parent_node* <= drop_parent_node* null
+		add_sibling_object_above* <= add_sibling_object_above* null
+		props_by_type* <= props_by_type*
+		replace_prop*? <=> replace_prop*? null
+		set_subprop_tree*? <=> set_subprop_tree*? null
+		add_subprop* <= add_subprop* null
+		add_rootprop* <= add_rootprop* null
+		add_object_in_list*? <=> add_object_in_list*? null
+		class_list <= class_list /string
+		props_of* <= props_of* /$mol_tree2
+	Data_node* $ss_editor_node_data
+		id <= id* \
+		tree? <= data_tree*? $mol_tree2_empty
+		value? <=> data_value*? \
+		type? <=> data_type*? \
+		child_ids? <=> data_child_ids*? /string
+		child_nodes? <=> data_child_nodes*? /$ss_editor_node_data
+		changeable? <=> data_changeable*? false
+		multiple? <=> data_multiple*? false
+		data_tree*? <=> data_tree*? $mol_tree2_empty
+		data_value*? <=> data_value*? \
+		data_type*? <=> data_type*? \
+		data_child_ids*? <=> data_child_ids*? /string
+		data_child_nodes*? <=> data_child_nodes*? /$ss_editor_node_data
+		data_changeable*? <=> data_changeable*? false
+		data_multiple*? <=> data_multiple*? false
+	initial_tree_string \
+		\$ss_editor_example $mol_page
+		\	tools /
+		\		<= Button_tools $mol_button_minor
+		\			title \Toolbar Button
+		\	body /
+		\		<= Login $mol_form
+		\			form_fields /
+		\				<= Name_field $mol_form_field
+		\					name <= name_label @ \User name
+		\					bid <= name_bid \
+		\					control <= Name_control $mol_string
+		\						value? <=> name? \
+		\				<= pass_field $mol_form_field
+		\					name <= pass_label @ \Pass word
+		\					bid <= pass_bid \
+		\					control <= Pass_control $mol_string
+		\						value? <=> pass? \
+		\						type \password
+		\			buttons /
+		\				<= Login_submit $mol_button_major
+		\					title <= login_submit_label @ \Submit
+		\					event_click? <=> event_submit? null
+		\	foot /
+		\		<= Button_foot $mol_button_minor
+		\			title \Footer Button
+		\
