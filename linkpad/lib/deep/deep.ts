@@ -1,9 +1,7 @@
 namespace $ {
 
-	// type DeepClient = import("@deep-foundation/deeplinks/imports/client").DeepClient
-	// type minilinks = Awaited< typeof import("@deep-foundation/deeplinks/imports/minilinks") >['minilinks']
-	type DeepClient = any
-	type minilinks = any
+	type DeepClient = import("@deep-foundation/deeplinks/imports/client").DeepClient
+	type minilinks = Awaited< typeof import("@deep-foundation/deeplinks/imports/minilinks") >['minilinks']
 
 	export class $ss_linkpad_lib_deep {
 
