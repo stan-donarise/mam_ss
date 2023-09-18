@@ -3784,12 +3784,12 @@ var $;
             const list = $mol_range2(index => (++calls, index), () => 10);
             $mol_assert_ok(list instanceof Array);
             $mol_assert_equal(list.length, 10);
-            $mol_assert_equal(list[-1], -1);
+            $mol_assert_equal(list[-1], undefined);
             $mol_assert_equal(list[0], 0);
             $mol_assert_equal(list[9], 9);
             $mol_assert_equal(list[9.5], undefined);
-            $mol_assert_equal(list[10], 10);
-            $mol_assert_equal(calls, 4);
+            $mol_assert_equal(list[10], undefined);
+            $mol_assert_equal(calls, 2);
         },
         'infinity list'() {
             let calls = 0;
@@ -3798,8 +3798,8 @@ var $;
             $mol_assert_equal(list[0], 0);
             $mol_assert_equal(list[4], 4);
             $mol_assert_equal(list[Number.MAX_SAFE_INTEGER], Number.MAX_SAFE_INTEGER);
-            $mol_assert_equal(list[Number.POSITIVE_INFINITY], Number.POSITIVE_INFINITY);
-            $mol_assert_equal(calls, 4);
+            $mol_assert_equal(list[Number.POSITIVE_INFINITY], undefined);
+            $mol_assert_equal(calls, 3);
         },
         'stringify'() {
             const list = $mol_range2(i => i, () => 5);
@@ -3837,9 +3837,9 @@ var $;
             $mol_assert_equal(list[9], 4);
             $mol_assert_equal(list[10], 0);
             $mol_assert_equal(list[14], 4);
-            $mol_assert_equal(list[15], 5);
+            $mol_assert_equal(list[15], undefined);
             $mol_assert_equal(calls1, 2);
-            $mol_assert_equal(calls2, 3);
+            $mol_assert_equal(calls2, 2);
         },
         'filter'() {
             let calls = 0;
@@ -3848,16 +3848,17 @@ var $;
             $mol_assert_equal(list.length, 3);
             $mol_assert_equal(list[0], 1);
             $mol_assert_equal(list[2], 5);
-            $mol_assert_equal(list[3], 7);
+            $mol_assert_equal(list[3], undefined);
             $mol_assert_equal(calls, 10);
         },
         'reverse'() {
             let calls = 0;
-            const list = $mol_range2(index => (++calls, index), () => 10).reverse().slice(0, 3);
+            const list = $mol_range2(index => (++calls, index), () => 10).toReversed().slice(0, 3);
             $mol_assert_ok(list instanceof Array);
             $mol_assert_equal(list.length, 3);
             $mol_assert_equal(list[0], 9);
-            $mol_assert_equal(list[3], 6);
+            $mol_assert_equal(list[2], 7);
+            $mol_assert_equal(list[3], undefined);
             $mol_assert_equal(calls, 2);
         },
         'reduce'() {
@@ -3879,9 +3880,9 @@ var $;
             $mol_assert_equal(target.length, 5);
             $mol_assert_equal(target[0], 10);
             $mol_assert_equal(target[4], 14);
-            $mol_assert_equal(target[5], 15);
-            $mol_assert_equal(calls1, 3);
-            $mol_assert_equal(calls2, 3);
+            $mol_assert_equal(target[5], undefined);
+            $mol_assert_equal(calls1, 2);
+            $mol_assert_equal(calls2, 2);
         },
         'lazy slice'() {
             let calls = 0;
@@ -3890,8 +3891,8 @@ var $;
             $mol_assert_equal(list.length, 4);
             $mol_assert_equal(list[0], 3);
             $mol_assert_equal(list[3], 6);
-            $mol_assert_equal(list[4], 7);
-            $mol_assert_equal(calls, 3);
+            $mol_assert_equal(list[4], undefined);
+            $mol_assert_equal(calls, 2);
         },
         'lazy some'() {
             let calls = 0;
@@ -3915,8 +3916,8 @@ var $;
             $mol_assert_equal(calls, 0);
             $mol_assert_equal(list[0], 12);
             $mol_assert_equal(list[3], 15);
-            $mol_assert_equal(list[4], Number.NaN);
-            $mol_assert_equal(calls, 3);
+            $mol_assert_equal(list[4], undefined);
+            $mol_assert_equal(calls, 2);
         },
         'prevent modification'() {
             const list = $mol_range2(i => i, () => 5);
@@ -3926,6 +3927,8 @@ var $;
             $mol_assert_fail(() => list.shift(), TypeError);
             $mol_assert_fail(() => list.splice(1, 2), TypeError);
             $mol_assert_fail(() => list[1] = 2, TypeError);
+            $mol_assert_fail(() => list.reverse(), TypeError);
+            $mol_assert_fail(() => list.sort(), TypeError);
             $mol_assert_equal(list.toString(), '0,1,2,3,4');
         }
     });
