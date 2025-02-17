@@ -57,7 +57,7 @@ $ss_editor $mol_scroll
 		\					bid <= name_bid \
 		\					control <= Name_control $mol_string
 		\						value? <=> name? \
-		\				<= pass_field $mol_form_field
+		\				<= Pass_field $mol_form_field
 		\					name <= pass_label @ \Pass word
 		\					bid <= pass_bid \
 		\					control <= Pass_control $mol_string
