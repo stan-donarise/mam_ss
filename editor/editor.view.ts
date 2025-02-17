@@ -41,7 +41,7 @@ namespace $.$$ {
 		}
 
 		prop_ids( next?: any ): readonly string[] {
-			$mol_wire_solid()
+			// $mol_wire_solid()
 			return super.prop_ids( next )
 		}
 
@@ -255,7 +255,7 @@ namespace $.$$ {
 			block.value = ()=> this.data_value( data_id )
 			block.placeholder = ()=> this.data_type( data_id )
 			block.input = ()=> {
-				this.data_value( data_id, block.dom_node().textContent )
+				this.data_value( data_id, block.dom_node().textContent! )
 			}
 			return block
 		}
@@ -486,7 +486,7 @@ namespace $.$$ {
 			const props = new Map< string, Prop_definition[] >()
 			
 			const add = ( class_name: string, prop_tree: $mol_tree2 )=> {
-				const name = this.$.$mol_view_tree2_prop_split( prop_tree ).name.text()
+				const name = this.$.$mol_view_tree2_prop_parts( prop_tree ).name
 				const prop_defs = props.get( name ) ?? []
 				props.set( name, prop_defs )
 				prop_defs.push({

@@ -31,6 +31,12 @@ namespace $.$$ {
 			return this.data_node().value()
 		}
 
+		@ $mol_mem
+		options_filtered() {
+			const select = this.Autocomplete() as $mol_select
+			return select.options_filtered()
+		}
+
 	}
 	
 }

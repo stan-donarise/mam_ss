@@ -21,13 +21,13 @@ $ss_editor_node_ui_pop $ss_editor_node_ui_default
 				sub <= autocomplete_footer /
 	autocomplete false
 	data_node $ss_editor_node_data
+	options_filtered /
 	Autocomplete $mol_select
 		no_options_message \Not found
 		event_select*? <=> event_select*? null
 		Bubble_pane => Bubble_pane
 		dictionary <= select_dict *
 		filter_pattern <= filter_pattern \
-		options_filtered => options_filtered
 	attr *
 		^
 		hovered <= self_hovered

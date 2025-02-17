@@ -73,7 +73,7 @@ namespace $.$$ {
 			const overridden_props = this.data_node_parent().child_nodes().map( node => node.value() )
 			const dict: Record< string, string > = {}
 			this.props_of_class().forEach( tree => {
-				const prop_name = this.$.$mol_view_tree2_prop_name( tree )
+				const prop_name = this.$.$mol_view_tree2_prop_parts( tree ).name
 				if( overridden_props.includes( prop_name ) && this.data_node().value() != prop_name ) return
 				dict[ prop_name ] = prop_name
 			})
@@ -81,7 +81,7 @@ namespace $.$$ {
 		}
 
 		event_select( selected: string ) {
-			const prop_tree = this.props_of_class().find( tree => this.$.$mol_view_tree2_prop_name( tree ) == selected )
+			const prop_tree = this.props_of_class().find( tree => this.$.$mol_view_tree2_prop_parts( tree ).name == selected )
 			this.set_subprop_tree( this.id(), prop_tree )
 		}
 

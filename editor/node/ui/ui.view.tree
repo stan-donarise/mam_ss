@@ -13,7 +13,7 @@ $ss_editor_node_ui $mol_ghost
 	Sub <= Root
 	type_force? \
 	-
-	variants *
+	variants *any
 		locale <= Locale $ss_editor_node_ui_locale
 			children <= children
 			data_node <= data_node

@@ -1,5 +1,8 @@
 name: $ss_editor
 
+# https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs#defining-access-for-the-github_token-permissions
+permissions: write-all
+
 on:
   workflow_dispatch:
   push:
@@ -11,15 +14,15 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    
     steps:
-
+    
     - uses: hyoo-ru/mam_build@master2
       with:
         package: 'ss'
         modules: 'editor'
-
-    - uses: JamesIves/github-pages-deploy-action@4.1.7
+    
+    - uses: hyoo-ru/gh-deploy@v4.4.1
+      if: github.ref == 'refs/heads/master'
       with:
-        branch: gh-pages
         folder: 'ss/editor/-'
