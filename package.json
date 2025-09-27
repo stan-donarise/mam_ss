@@ -223,9 +223,10 @@
     "$mol_icon_playlist",
     "$mol_page",
     "$mol_form",
+    "$mol_button_major",
+    "$mol_status",
     "$mol_row",
     "$mol_form_field",
-    "$mol_button_major",
     "$mol_fetch",
     "$mol_dom_parse"
   ],

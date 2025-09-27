@@ -1,4 +1,7 @@
 {
+	"$mol_form_message_done": "Saved",
+	"$mol_form_message_invalid": "Form is not valid",
+	"$mol_form_submit_title": "Save",
 	"$mol_search_Clear_hint": "Clear",
 	"$mol_search_hint": "Search...",
 	"$mol_select_filter_hint": "Filter..",
