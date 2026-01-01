@@ -164,6 +164,7 @@
     "$ss_editor_node_ui_pop",
     "$mol_pop_over",
     "$mol_pop",
+    "$mol_follower",
     "$mol_layer",
     "$mol_select",
     "$mol_pick",
