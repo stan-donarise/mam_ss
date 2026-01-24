@@ -443,6 +443,7 @@ $mol_select $mol_pick
 		submit?event <=> submit?event null
 		enabled <= enabled true
 	Trigger_icon $mol_icon_dots_vertical
+	trigger_enabled <= enabled
 
 $ss_editor_node_ui_pop $ss_editor_node_ui_default
 	sub /
