@@ -1,0 +1,10 @@
+{
+	"name": "ss_editor",
+	"short_name": "ss_editor",
+	"description": "",
+	"id": "ss_editor",
+	"start_url": ".",
+	"display": "standalone",
+	"background_color": "#000000",
+	"theme_color": "#000000"
+}
